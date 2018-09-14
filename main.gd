@@ -24,7 +24,7 @@ func get_sizes(filepaths):
 #	var tick = OS.get_ticks_msec()
 
 	# Update graph
-	var graph = $HSplitContainer/ColorRect/PanelContainer/ScrollContainer/Graph
+	var graph = $HSplitContainer/ColorRect/PanelContainer/Graph
 	graph.polyline.clear()
 	var i = 0
 	for filepath in filepaths:

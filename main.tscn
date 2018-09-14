@@ -71,9 +71,9 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Margin", "Size Flags" ]
+_sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/ColorRect/PanelContainer" index="0"]
+[node name="Graph" type="Control" parent="HSplitContainer/ColorRect/PanelContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -84,35 +84,13 @@ margin_top = 7.0
 margin_right = 307.0
 margin_bottom = 473.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-scroll_horizontal_enabled = true
-scroll_horizontal = 0
-scroll_vertical_enabled = true
-scroll_vertical = 0
-scroll_deadzone = 148
-_sections_unfolded = [ "Margin", "Scroll" ]
-
-[node name="Graph" type="Control" parent="HSplitContainer/ColorRect/PanelContainer/ScrollContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 500.0
-margin_bottom = 480.0
-rect_min_size = Vector2( 500, 480 )
-rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 2 )
-_sections_unfolded = [ "Grow Direction", "Margin", "Mouse", "Rect", "Size Flags" ]
+_sections_unfolded = [ "Grow Direction", "Margin", "Mouse", "Rect", "Size Flags", "Visibility" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer" index="1"]
 
