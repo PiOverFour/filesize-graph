@@ -44,11 +44,9 @@ func get_sequence_from_file(filepath):
                 continue
             pattern = name_frame[0]
             frame_number = name_frame[1]
-            print(base_pattern, " ", pattern)
             if pattern == base_pattern:
                 frames.append([dirname.plus_file(file_name), frame_number])
             file_name = dir.get_next()
-    print(frames)
     return frames
 
 
@@ -70,7 +68,6 @@ func process_single_file(filepath):
 
 
 func process_files(filepaths):
-    print("processing")
     var sequence
     # Get sequence if only one file is passed
     if typeof(filepaths) == TYPE_STRING_ARRAY and len(filepaths) == 1:
@@ -106,9 +103,15 @@ func process_files(filepaths):
     graph.min_size = min_size
     graph.max_frame = max_frame
     graph.min_frame = min_frame
-    for i in range(graph.polyline.size()):
-        graph.polyline[i].y = graph.polyline[i].y * graph.rect_size.y / max_size
-        graph.polyline[i].x = graph.polyline[i].x * graph.rect_size.x / max_frame
+    
+    print(max_frame)
+    graph.graph_scale = Vector2(
+#                                1/10,
+                                float(graph.rect_size.x) / max_frame,
+#                                1.0/1000.0)
+                                float(graph.rect_size.y) / max_size)
+#    graph.transform_matrix.x = Vector2(1, 0) / max_frame * graph.rect_size.x
+#    graph.transform_matrix.y = Vector2(0, 1) / max_size  * graph.rect_size.y
 #    print(graph.polyline)
     graph.update()
 
