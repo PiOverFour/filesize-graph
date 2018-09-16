@@ -104,12 +104,10 @@ func process_files(filepaths):
     graph.max_frame = max_frame
     graph.min_frame = min_frame
     
-    print(max_frame)
     graph.graph_scale = Vector2(
-#                                1/10,
-                                float(graph.rect_size.x) / max_frame,
-#                                1.0/1000.0)
-                                float(graph.rect_size.y) / max_size)
+                                float(graph.rect_size.x) / (max_frame),
+                                float(graph.rect_size.y) / (max_size ))
+#    graph.graph_location = Vector2(min_frame, graph.rect_size.y + (max_size / min_size))
 #    graph.transform_matrix.x = Vector2(1, 0) / max_frame * graph.rect_size.x
 #    graph.transform_matrix.y = Vector2(0, 1) / max_size  * graph.rect_size.y
 #    print(graph.polyline)

@@ -3,8 +3,8 @@ extends Control
 
 var polyline = [Vector2(0, 0), Vector2(100, 100), Vector2(0, 100)]
 #var transform_matrix = Transform2D(Vector2(1, 0), Vector2(0, 1), Vector2(0, 0))
-var graph_location = Vector2(0, 0)
-var graph_scale = Vector2(1, 1)
+var graph_location
+var graph_scale = Vector2(1, -1)
 var is_dragging = false
 var viewport_offset = Vector2(0, 0)
 var min_size
@@ -12,6 +12,8 @@ var max_size = 100
 var min_frame
 var max_frame = 100
 
+func _ready():
+     graph_location = Vector2(0, rect_size.y)
 
 func _gui_input(event):
     # Activate drag

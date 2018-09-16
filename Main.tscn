@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://Graph.gd" type="Script" id=2]
+[ext_resource path="res://FileMenu.gd" type="Script" id=2]
+[ext_resource path="res://EditMenu.gd" type="Script" id=3]
+[ext_resource path="res://Graph.gd" type="Script" id=4]
 
 [sub_resource type="Theme" id=1]
 
@@ -22,367 +24,7 @@ size_flags_vertical = 3
 script = ExtResource( 1 )
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="HSplitContainer" type="HSplitContainer" parent="." index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 0
-grow_vertical = 0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = SubResource( 1 )
-split_offset = 50
-collapsed = false
-dragger_visibility = 0
-_sections_unfolded = [ "Anchor", "Hint", "Margin", "Rect", "Size Flags" ]
-
-[node name="ColorRect" type="ColorRect" parent="HSplitContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 314.0
-margin_bottom = 480.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color( 0.204535, 0.191162, 0.28125, 1 )
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags" ]
-
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/ColorRect" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
-
-[node name="Graph" type="Control" parent="HSplitContainer/ColorRect/PanelContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 307.0
-margin_bottom = 473.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 2 )
-_sections_unfolded = [ "Grow Direction", "Margin", "Mouse", "Rect", "Size Flags", "Visibility" ]
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 326.0
-margin_right = 540.0
-margin_bottom = 480.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="ImageSequence" type="PanelContainer" parent="HSplitContainer/VBoxContainer" index="0"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 214.0
-margin_bottom = 238.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 3
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Popup" type="Popup" parent="HSplitContainer/VBoxContainer/ImageSequence" index="0"]
-
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 7.0
-margin_bottom = 7.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-popup_exclusive = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VBoxContainer/ImageSequence/Popup" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 40.0
-margin_top = 80.0
-margin_right = 93.0
-margin_bottom = 127.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-
-[node name="GridContainer" type="GridContainer" parent="HSplitContainer/VBoxContainer/ImageSequence" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 207.0
-margin_bottom = 231.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_constants/vseparation = 13
-custom_constants/hseparation = 13
-columns = 8
-_sections_unfolded = [ "custom_constants" ]
-
-[node name="Image1" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Size Flags" ]
-
-[node name="ColorRect6" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 13.0
-margin_right = 13.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Size Flags" ]
-
-[node name="ColorRect2" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 26.0
-margin_right = 26.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="ColorRect7" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 39.0
-margin_right = 39.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="ColorRect3" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 52.0
-margin_right = 52.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Rect" ]
-
-[node name="ColorRect9" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="5"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 65.0
-margin_right = 65.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Rect" ]
-
-[node name="ColorRect4" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="6"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 78.0
-margin_right = 78.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="ColorRect10" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="7"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 91.0
-margin_right = 91.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="ColorRect5" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="8"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 13.0
-margin_bottom = 13.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="ColorRect8" type="ColorRect" parent="HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="9"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 13.0
-margin_top = 13.0
-margin_right = 13.0
-margin_bottom = 13.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="OpenFile" type="Button" parent="HSplitContainer/VBoxContainer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 65.0
-margin_top = 351.0
-margin_right = 148.0
-margin_bottom = 371.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-hint_tooltip = "Open image sequence"
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Open file..."
-flat = false
-align = 1
-_sections_unfolded = [ "Margin", "Size Flags" ]
-
-[node name="FileDialog" type="FileDialog" parent="." index="1"]
+[node name="FileDialog" type="FileDialog" parent="." index="0"]
 
 visible = false
 anchor_left = 0.0
@@ -414,7 +56,444 @@ current_file = "default_env.tres"
 current_path = "/home/damien/PROG/filesize-graph-godot/default_env.tres"
 _sections_unfolded = [ "Dialog" ]
 
-[connection signal="pressed" from="HSplitContainer/VBoxContainer/OpenFile" to="FileDialog" method="popup"]
+[node name="VBoxContainer" type="VBoxContainer" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 540.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="FileMenu" type="MenuButton" parent="VBoxContainer/HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 35.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = false
+action_mode = 0
+enabled_focus_mode = 0
+shortcut = null
+group = null
+text = "File"
+flat = true
+align = 1
+items = [  ]
+script = ExtResource( 2 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="EditMenu" type="MenuButton" parent="VBoxContainer/HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 39.0
+margin_right = 75.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = false
+action_mode = 0
+enabled_focus_mode = 0
+shortcut = null
+group = null
+text = "Edit"
+flat = true
+align = 1
+items = [  ]
+script = ExtResource( 3 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 24.0
+margin_right = 540.0
+margin_bottom = 480.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 1 )
+split_offset = -140
+collapsed = false
+dragger_visibility = 0
+_sections_unfolded = [ "Anchor", "Hint", "Margin", "Rect", "Size Flags" ]
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/HSplitContainer" index="0"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 124.0
+margin_bottom = 456.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.204535, 0.191162, 0.28125, 1 )
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags" ]
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HSplitContainer/ColorRect" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
+
+[node name="Graph" type="Control" parent="VBoxContainer/HSplitContainer/ColorRect/PanelContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 117.0
+margin_bottom = 449.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 4 )
+_sections_unfolded = [ "Grow Direction", "Margin", "Mouse", "Rect", "Size Flags", "Visibility" ]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HSplitContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 136.0
+margin_right = 540.0
+margin_bottom = 456.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="ImageSequence" type="PanelContainer" parent="VBoxContainer/HSplitContainer/VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 404.0
+margin_bottom = 456.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 3
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Popup" type="Popup" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence" index="0"]
+
+editor/display_folded = true
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 7.0
+margin_bottom = 7.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+popup_exclusive = false
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/Popup" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 80.0
+margin_right = 93.0
+margin_bottom = 127.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 397.0
+margin_bottom = 449.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/vseparation = 13
+custom_constants/hseparation = 13
+columns = 10
+_sections_unfolded = [ "custom_constants" ]
+
+[node name="Image1" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 15.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="ColorRect6" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 28.0
+margin_right = 43.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 56.0
+margin_right = 71.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor" ]
+
+[node name="ColorRect7" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 84.0
+margin_right = 99.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor" ]
+
+[node name="ColorRect3" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 112.0
+margin_right = 127.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="ColorRect9" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 140.0
+margin_right = 155.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="ColorRect4" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 168.0
+margin_right = 183.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor" ]
+
+[node name="ColorRect10" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="7"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 196.0
+margin_right = 211.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor" ]
+
+[node name="ColorRect5" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="8"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 224.0
+margin_right = 239.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor" ]
+
+[node name="ColorRect8" type="ColorRect" parent="VBoxContainer/HSplitContainer/VBoxContainer/ImageSequence/GridContainer" index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 252.0
+margin_right = 267.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 15, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 1, 1, 1, 1 )
+_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
 [connection signal="files_selected" from="FileDialog" to="." method="process_files"]
 
