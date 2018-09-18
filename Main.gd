@@ -98,7 +98,7 @@ func process_files(filepaths):
             min_frame = frame[1]
         polyline.append(Vector2(i, size))
         i += 1
-    get_node(graph).add_sequence(polyline, min_size, max_size, min_frame, max_frame)
+    get_node(graph).add_sequence(polyline, sequence[0][0], min_size, max_size, min_frame, max_frame)
 
 
     # Add box to right UI
