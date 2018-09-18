@@ -16,6 +16,8 @@ var max_size
 var min_frame
 var max_frame
 
+var default_font
+
 func add_sequence(polyline, name, min_size, max_size, min_frame, max_frame):
     self.polyline = polyline
     display_polyline = polyline.duplicate()
@@ -23,6 +25,9 @@ func add_sequence(polyline, name, min_size, max_size, min_frame, max_frame):
     update()
 
 func _ready():
+    var label = Label.new()
+    default_font = label.get_font("")
+    
     add_sequence([Vector2(0, 0), Vector2(50, 100), Vector2(60, 100)], "truc", 0, 100, 0, 60)
     graph_transform[2] = rect_size / 2
     update_graph()
@@ -39,8 +44,7 @@ func zoom_graph(center, factor, base_transform=graph_transform):
     transform.origin += center
     graph_transform = transform * base_transform
     update_graph()
-    update()
-    
+    update()    
 
 func _gui_input(event):
     if event is InputEventMouseButton:
@@ -81,19 +85,42 @@ func _gui_input(event):
             zoom_graph(rect_size / 2,
                        factor,
                        zoom_start_transform)
-            update_graph()
-            self.update()
 
-func draw_axes():
-    var size = graph_transform * rect_size
-    var x = size.x
-    var y = size.y
+func log10(x):
+    return log(x)/log(10)
     
-    while x < size.x:
-        draw_line(Vector2(graph_transform.origin.x, 0.0),
-                  Vector2(graph_transform.origin.x, rect_size.y),
-                  Color(1.0, 1.0, 1.0, 0.1), 1.0, true)
-        x += 15
+func draw_axes():
+    var lower_corner = graph_transform.affine_inverse() * Vector2(0, 0)
+    var upper_corner = graph_transform.affine_inverse() * rect_size
+    var size = upper_corner - lower_corner
+    var scale_x = log10(size.x)
+    var scale_y = log10(size.y)
+    var step_x = pow(10, floor(scale_x))
+    var step_y = pow(10, floor(scale_y))
+#    print(size)
+    print(lower_corner, ' ', upper_corner)
+    print(step_x)
+    var lower_x_int = lower_corner.x - fmod(lower_corner.x, step_x) - step_x
+    var upper_x_int = upper_corner.x - fmod(upper_corner.x, step_x) + step_x*2
+    var lower_y_int = lower_corner.y - fmod(lower_corner.y, step_y) - step_y
+    var upper_y_int = upper_corner.y - fmod(upper_corner.y, step_y) + step_y*2
+    print(lower_x_int)
+    
+    var draw_color = Color(1.0, 1.0, 1.0, 0.1)
+    
+    for x in range(lower_x_int, upper_x_int, step_x/10):
+        draw_line(graph_transform * Vector2(x, lower_corner.y),
+                  graph_transform * Vector2(x, upper_corner.y),
+                  draw_color, 1.0, true)
+        draw_string(default_font, graph_transform * Vector2(x, upper_corner.y), str(x), draw_color)
+#        g( Font font, Vector2 position, String text, Color modulate=Color( 1, 1, 1, 1 ), int clip_w=-1 )
+
+    for y in range(lower_y_int, upper_y_int, step_y/10):
+        draw_line(graph_transform * Vector2(lower_corner.x, y),
+                  graph_transform * Vector2(upper_corner.x, y),
+                  draw_color, 1.0, true)
+        draw_string(default_font, graph_transform * Vector2(lower_corner.x, y), str(y), draw_color)
+
 #    while y < size.y:
 #        draw_line(Vector2(0.0, y), Vector2(rect_size.x, y), Color(1.0, 1.0, 1.0, 0.1), 1.0, true)
 #        y += 15
