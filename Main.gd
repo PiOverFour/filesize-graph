@@ -1,6 +1,6 @@
 extends Control
 
-
+export(NodePath) var graph
 var rexp = RegEx.new()
 
 func _ready():
@@ -78,14 +78,13 @@ func process_files(filepaths):
     sequence.sort()
 
     # Update graph
-    var graph = $HSplitContainer/ColorRect/PanelContainer/Graph
-    graph.polyline.clear()
     var i = 0
     var size
     var min_size = INF
     var max_size = 0
     var min_frame = INF
     var max_frame = 0
+    var polyline = []
     for frame in sequence:
         size = get_size(frame[0])
         # Get extrema
@@ -97,21 +96,10 @@ func process_files(filepaths):
             max_frame = frame[1]
         if frame[1] < min_frame:
             min_frame = frame[1]
-        graph.polyline.append(Vector2(i, size))
+        polyline.append(Vector2(i, size))
         i += 1
-    graph.max_size = max_size
-    graph.min_size = min_size
-    graph.max_frame = max_frame
-    graph.min_frame = min_frame
-    
-    graph.graph_scale = Vector2(
-                                float(graph.rect_size.x) / (max_frame),
-                                float(graph.rect_size.y) / (max_size ))
-#    graph.graph_location = Vector2(min_frame, graph.rect_size.y + (max_size / min_size))
-#    graph.transform_matrix.x = Vector2(1, 0) / max_frame * graph.rect_size.x
-#    graph.transform_matrix.y = Vector2(0, 1) / max_size  * graph.rect_size.y
-#    print(graph.polyline)
-    graph.update()
+    get_node(graph).add_sequence(polyline, min_size, max_size, min_frame, max_frame)
+
 
     # Add box to right UI
     var container = $HSplitContainer/VBoxContainer
