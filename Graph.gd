@@ -4,6 +4,8 @@ extends Control
 var sequences = []
 
 export(NodePath) var sequences_container
+const sequence_panel_scene = preload("res://ImageSequence.tscn")
+
 var graph_transform = Transform2D()
 var zoom_speed = 1.1
 var zoom_start
@@ -27,8 +29,20 @@ class Sequence:
     var active_color = Color(1, 1, 1)
     var point_colors = []
 
+    var sequence_panel
+    var sequences_container
+
+    func _init(polyline, color, graph, sequences_container):
+        self.polyline = polyline
+        self.display_polyline = polyline.duplicate()
+        for i in range(len(polyline)):
+            self.point_colors.append(color)
+        self.draw_color = color
+        self.graph = graph
+        create_sequence_panel(sequences_container)
+        self.sequences_container = sequences_container
+
     func find_close_point(position):
-        print(graph.graph_transform)
         var min_distance = INF
         var ls
         var current_id
@@ -43,18 +57,28 @@ class Sequence:
         min_distance = sqrt(min_distance)
         if min_distance < 10:
             point_colors[current_id] = active_color
-        print(current_id, ' ', min_distance)
+            self.sequence_panel.highlight(current_id)
         graph.update()
 
+    func create_sequence_panel(sequences_container):
+        self.sequence_panel = sequence_panel_scene.instance()
+        sequences_container.add_child(sequence_panel)
+        sequence_panel.graph_node = self.graph
+        sequence_panel.graph_sequence = self
+        for i in range(len(self.polyline)):
+            sequence_panel.add_image(i, str(self.polyline[i]))
+
+    func delete():
+        self.sequences_container.remove_child(self.sequence_panel)
+        self.sequence_panel.queue_free()
+        self.graph.sequences.remove(self.graph.sequences.find(self))
+        self.graph.update()
+
+
 func add_sequence(polyline, name, min_size, max_size, min_frame, max_frame, color):
-    var sequence = Sequence.new()
-    sequence.polyline = polyline
-    sequence.display_polyline = polyline.duplicate()
-    for i in range(len(polyline)):
-        sequence.point_colors.append(color)
-    sequence.draw_color = color
-    sequence.graph = self
+    var sequence = Sequence.new(polyline, color, self, get_node(sequences_container))
     sequences.append(sequence)
+    update_graph()
 
     update()
 
@@ -142,13 +166,13 @@ func draw_axes():
 
     var draw_color = Color(1.0, 1.0, 1.0, 0.1)
 
-    for x in range(lower_x_int, upper_x_int, step_x/10):
+    for x in range(lower_x_int, upper_x_int, step_x/2):
         draw_line(graph_transform * Vector2(x, lower_corner.y),
                   graph_transform * Vector2(x, upper_corner.y),
                   draw_color, 1.0, true)
         draw_string(default_font, graph_transform * Vector2(x, upper_corner.y), str(x), draw_color)
 
-    for y in range(lower_y_int, upper_y_int, step_y/10):
+    for y in range(lower_y_int, upper_y_int, step_y/2):
         draw_line(graph_transform * Vector2(lower_corner.x, y),
                   graph_transform * Vector2(upper_corner.x, y),
                   draw_color, 1.0, true)

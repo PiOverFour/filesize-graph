@@ -27,11 +27,11 @@ func get_sequence_from_file(filepath):
     var frames = []
     var pattern
     var frame_number
-    
+
     var dirname = filepath.get_base_dir()
     var file_name = filepath.get_file()
     var base_pattern = get_name_and_frame(file_name)[0]
-    
+
     var dir = Directory.new()
     if dir.open(dirname) == OK:
         dir.list_dir_begin(true)
@@ -98,7 +98,7 @@ func process_files(filepaths):
             min_frame = frame[1]
         polyline.append(Vector2(i, size))
         i += 1
-    get_node(graph).add_sequence(polyline, sequence[0][0], min_size, max_size, min_frame, max_frame)
+    get_node(graph).add_sequence(polyline, sequence[0][0], min_size, max_size, min_frame, max_frame, Color(0.2, 0.2, 1.0))
 
 
     # Add box to right UI

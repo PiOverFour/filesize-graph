@@ -1,13 +1,12 @@
 extends PanelContainer
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+var graph_node
+var graph_sequence
+var do_highlight = false
+var highlight_id = 0
 
-func _ready():
-    # Called when the node is added to the scene for the first time.
-    # Initialization here
-    pass
+export(NodePath) var image_container
+var images = []
 
 func select_image(image_id):
     var img = $ScrollContainer/GridContainer.get_child(image_id)
@@ -15,7 +14,32 @@ func select_image(image_id):
     $Popup.popup()
     $Popup.rect_position = xform
 
-#func _process(delta):
-#    # Called every frame. Delta is time since last frame.
-#    # Update game logic here.
-#    pass
+func add_image(image_id, image_path):
+    var image_node = ColorRect.new()
+    image_node.rect_min_size = Vector2(16, 16)
+    images.append(image_node)
+    get_node(image_container).add_child(image_node)
+
+func highlight(image_id):
+    do_highlight = true
+    highlight_id = image_id
+    self.update()
+
+func _on_RemoveButton_pressed():
+    graph_sequence.delete()
+#    graph_node.sequences.remove(graph_node.sequences.find(graph_sequence))
+
+func draw_highlight():
+    if do_highlight:
+        var position = images[highlight_id].rect_position
+        var size = images[highlight_id].rect_size
+        var width = Vector2(2.0, 2.0)
+        var line = [Vector2(position) + size / 2.0 - width / 2.0,
+                Vector2(position) + Vector2(size) * Vector2(1.0, 0.0) + size / 2.0 - width / 2.0,
+                Vector2(position) + Vector2(size) * Vector2(1.0, 1.0) + size / 2.0 - width / 2.0,
+                Vector2(position) + Vector2(size) * Vector2(0.0, 1.0) + size / 2.0 - width / 2.0,
+                Vector2(position)                                     + size / 2.0 - width / 2.0]
+        draw_polyline(line, Color(0.5, 0.6, 0.5), width.x, true)
+
+func _draw():
+    draw_highlight()

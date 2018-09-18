@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://FileMenu.gd" type="Script" id=2]
 [ext_resource path="res://EditMenu.gd" type="Script" id=3]
 [ext_resource path="res://Graph.gd" type="Script" id=4]
-[ext_resource path="res://ImageSequence.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Theme" id=1]
 
@@ -222,7 +221,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource( 1 )
-split_offset = -140
+split_offset = -29
 collapsed = false
 dragger_visibility = 0
 _sections_unfolded = [ "Anchor", "Hint", "Margin", "Rect", "Size Flags" ]
@@ -233,7 +232,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 124.0
+margin_right = 235.0
 margin_bottom = 456.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -266,7 +265,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 117.0
+margin_right = 228.0
 margin_bottom = 449.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -284,7 +283,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 136.0
+margin_left = 247.0
 margin_right = 540.0
 margin_bottom = 456.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -295,8 +294,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
-
-[node name="ImageSequence" parent="VBoxContainer/HSplitContainer/SequencesContainer" index="0" instance=ExtResource( 5 )]
 
 [node name="Sprite" type="Sprite" parent="." index="3"]
 
