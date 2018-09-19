@@ -4,9 +4,13 @@ var graph_node
 var graph_sequence
 var do_highlight = false
 var highlight_id = 0
+var color
 
 export(NodePath) var image_container
 var images = []
+
+#func setup():
+#    $BG.color = self.color
 
 func select_image(image_id):
     var img = $ScrollContainer/GridContainer.get_child(image_id)
@@ -35,11 +39,21 @@ func draw_highlight():
         var size = images[highlight_id].rect_size
         var width = Vector2(2.0, 2.0)
         var line = [Vector2(position) + size / 2.0 - width / 2.0,
-                Vector2(position) + Vector2(size) * Vector2(1.0, 0.0) + size / 2.0 - width / 2.0,
-                Vector2(position) + Vector2(size) * Vector2(1.0, 1.0) + size / 2.0 - width / 2.0,
-                Vector2(position) + Vector2(size) * Vector2(0.0, 1.0) + size / 2.0 - width / 2.0,
-                Vector2(position)                                     + size / 2.0 - width / 2.0]
+                    Vector2(position) + Vector2(size) * Vector2(1.0, 0.0) + size / 2.0 - width / 2.0,
+                    Vector2(position) + Vector2(size) * Vector2(1.0, 1.0) + size / 2.0 - width / 2.0,
+                    Vector2(position) + Vector2(size) * Vector2(0.0, 1.0) + size / 2.0 - width / 2.0,
+                    Vector2(position)                                     + size / 2.0 - width / 2.0]
         draw_polyline(line, Color(0.5, 0.6, 0.5), width.x, true)
+
+func draw_border():
+    var line = [Vector2(0.0, 0.0),
+                Vector2(rect_size.x, 0.0),
+                rect_size,
+                Vector2(0.0, rect_size.y),
+                Vector2(0.0, 0.0)
+                ]
+    draw_polyline(line, self.color, 1.0, true)
 
 func _draw():
     draw_highlight()
+    draw_border()

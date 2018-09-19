@@ -26,13 +26,22 @@ class Sequence:
     var display_polyline
     var draw_color
     var graph
-    var active_color = Color(1, 1, 1)
+    var active_color = Color(1.0, 1.0, 1.0)
     var point_colors = []
 
     var sequence_panel
     var sequences_container
 
+    func get_random_color():
+        var color = Color()
+        color.v = 1.0
+        color.s = rand_range(0.4, 0.6)
+        color.h = randf()
+        return color
+
     func _init(polyline, color, graph, sequences_container):
+        color = get_random_color()
+        print(color.h, ' ', color.s, ' ', color.v)
         self.polyline = polyline
         self.display_polyline = polyline.duplicate()
         for i in range(len(polyline)):
@@ -62,11 +71,13 @@ class Sequence:
 
     func create_sequence_panel(sequences_container):
         self.sequence_panel = sequence_panel_scene.instance()
-        sequences_container.add_child(sequence_panel)
-        sequence_panel.graph_node = self.graph
-        sequence_panel.graph_sequence = self
+        sequences_container.add_child(self.sequence_panel)
+        self.sequence_panel.graph_node = self.graph
+        self.sequence_panel.graph_sequence = self
+        self.sequence_panel.color = self.draw_color
         for i in range(len(self.polyline)):
-            sequence_panel.add_image(i, str(self.polyline[i]))
+            self.sequence_panel.add_image(i, str(self.polyline[i]))
+#        self.sequence_panel.setup()
 
     func delete():
         self.sequences_container.remove_child(self.sequence_panel)
@@ -83,10 +94,11 @@ func add_sequence(polyline, name, min_size, max_size, min_frame, max_frame, colo
     update()
 
 func _ready():
+    randomize()
     var label = Label.new()
     default_font = label.get_font("")
 
-    add_sequence([Vector2(0, 0), Vector2(50, 100), Vector2(60, 100)], "truc", 0, 100, 0, 60, Color(1.0, 0.2, 0.2))
+    add_sequence([Vector2(0, 0), Vector2(50, 100), Vector2(60, 100)], "truc", 0, 100, 0, 60, Color(1.0, 0.5, 0.2))
     graph_transform[2] = rect_size / 2
     update_graph()
     update()
