@@ -45,6 +45,7 @@ class Sequence:
         self.graph = graph
         create_sequence_panel(sequences_container)
         self.sequences_container = sequences_container
+        self.go_to()
 
     func find_close_point(position):
         var min_distance = INF
@@ -57,11 +58,20 @@ class Sequence:
             if ls < min_distance:
                 min_distance = ls
                 current_id = i
-            point_colors[i] = draw_color
         min_distance = sqrt(min_distance)
         if min_distance < 10:
-            point_colors[current_id] = active_color
             self.sequence_panel.highlight(current_id)
+            self.highlight(current_id)
+        else:
+            self.sequence_panel.highlight(-1)
+            self.highlight(-1)
+
+    func highlight(image_id):
+        for i in len(self.polyline):
+            if image_id == -1 or i != image_id:
+                point_colors[i] = self.draw_color
+            else:
+                point_colors[i] = self.active_color
         self.graph.update()
 
     func go_to():
@@ -95,11 +105,14 @@ class Sequence:
         self.sequences_container.remove_child(self.sequence_panel)
         self.sequence_panel.queue_free()
         self.graph.sequences.remove(self.graph.sequences.find(self))
+        print(len(graph.sequences))
+        self.sequences_container.get_node("DragHereLabel").visible = len(graph.sequences) < 1
         self.graph.update()
 
 func add_sequence(polyline, name, color):
     var sequence = Sequence.new(polyline, color, self, get_node(sequences_container))
     sequences.append(sequence)
+    get_node(sequences_container).get_node("DragHereLabel").visible = not len(sequences)
     update_graph()
 
 func _ready():
@@ -107,8 +120,7 @@ func _ready():
     var label = Label.new()
     default_font = label.get_font("")
 
-    add_sequence([Vector2(20, 20), Vector2(50, 100), Vector2(60, 100)], "truc", Color(1.0, 0.5, 0.2))
-    graph_transform.origin = rect_size / 2
+#    add_sequence([Vector2(20, 20), Vector2(50, 100), Vector2(60, 100)], "truc", Color(1.0, 0.5, 0.2))
     update_graph()
 
 func update_graph():

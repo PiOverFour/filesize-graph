@@ -8,6 +8,7 @@ var color
 
 export(NodePath) var image_container
 var images = []
+const image_scene = preload("res://Image.tscn")
 
 #func setup():
 #    $BG.color = self.color
@@ -19,13 +20,16 @@ func select_image(image_id):
     $Popup.rect_position = xform
 
 func add_image(image_id, image_path):
-    var image_node = ColorRect.new()
+#    var image_node = ColorRect.new()
+    var image_node = image_scene.instance()
     image_node.rect_min_size = Vector2(16, 16)
+    image_node.graph_sequence = graph_sequence
+    image_node.image_id = image_id
     images.append(image_node)
     get_node(image_container).add_child(image_node)
 
 func highlight(image_id):
-    do_highlight = true
+    do_highlight = image_id != -1
     highlight_id = image_id
     self.update()
 

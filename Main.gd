@@ -101,11 +101,6 @@ func process_files(filepaths):
     get_node(graph).add_sequence(polyline, sequence[0][0], Color(0.2, 0.2, 1.0))
 
 
-    # Add box to right UI
-    var container = $HSplitContainer/VBoxContainer
-#	container.
-
-
 func drop_files(files, screen):
     if len(files) == 1:
         process_single_file(files[0])
