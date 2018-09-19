@@ -14,11 +14,6 @@ var zoom_start_transform = Transform2D()
 var is_dragging = false
 var is_zooming = false
 
-var min_size
-var max_size
-var min_frame
-var max_frame
-
 var default_font
 
 class Sequence:
@@ -67,7 +62,25 @@ class Sequence:
         if min_distance < 10:
             point_colors[current_id] = active_color
             self.sequence_panel.highlight(current_id)
-        graph.update()
+        self.graph.update()
+
+    func go_to():
+        var min_x = INF
+        var max_x = -INF
+        var min_y = INF
+        var max_y = -INF
+        for point in self.polyline:
+            if point.x < min_x:
+                min_x = point.x
+            if point.x > max_x:
+                max_x = point.x
+            if point.y < min_y:
+                min_y = point.y
+            if point.y > max_y:
+                max_y = point.y
+        var origin = Vector2(min_x, min_y)
+        var size = Vector2(max_x - min_x, max_y - min_y)
+        self.graph.go_to(origin, size)
 
     func create_sequence_panel(sequences_container):
         self.sequence_panel = sequence_panel_scene.instance()
@@ -77,7 +90,6 @@ class Sequence:
         self.sequence_panel.color = self.draw_color
         for i in range(len(self.polyline)):
             self.sequence_panel.add_image(i, str(self.polyline[i]))
-#        self.sequence_panel.setup()
 
     func delete():
         self.sequences_container.remove_child(self.sequence_panel)
@@ -85,28 +97,25 @@ class Sequence:
         self.graph.sequences.remove(self.graph.sequences.find(self))
         self.graph.update()
 
-
-func add_sequence(polyline, name, min_size, max_size, min_frame, max_frame, color):
+func add_sequence(polyline, name, color):
     var sequence = Sequence.new(polyline, color, self, get_node(sequences_container))
     sequences.append(sequence)
     update_graph()
-
-    update()
 
 func _ready():
     randomize()
     var label = Label.new()
     default_font = label.get_font("")
 
-    add_sequence([Vector2(0, 0), Vector2(50, 100), Vector2(60, 100)], "truc", 0, 100, 0, 60, Color(1.0, 0.5, 0.2))
-    graph_transform[2] = rect_size / 2
+    add_sequence([Vector2(20, 20), Vector2(50, 100), Vector2(60, 100)], "truc", Color(1.0, 0.5, 0.2))
+    graph_transform.origin = rect_size / 2
     update_graph()
-    update()
 
 func update_graph():
     for sequence in sequences:
         for i in range(len(sequence.polyline)):
             sequence.display_polyline[i] = graph_transform.xform(sequence.polyline[i])
+    update()
 
 func zoom_graph(center, factor, base_transform=graph_transform):
     var transform = Transform2D()
@@ -114,9 +123,15 @@ func zoom_graph(center, factor, base_transform=graph_transform):
     transform = transform.scaled(factor)
     transform.origin += center
     graph_transform = transform * base_transform
+    print(graph_transform)
     update_graph()
-    update()
 
+func go_to(origin, size):
+    graph_transform = Transform2D(Vector2(rect_size.x / size.x, 0.0), Vector2(0.0, rect_size.y / size.y), origin * -rect_size / size)
+    print(origin)
+    print(size)
+    print(graph_transform)
+    update_graph()
 
 func _gui_input(event):
     if event is InputEventMouseButton:
@@ -146,9 +161,8 @@ func _gui_input(event):
     # Drag
     if event is InputEventMouseMotion:
         if is_dragging:
-            graph_transform[2] += event.relative
+            graph_transform.origin += event.relative
             update_graph()
-            self.update()
         elif is_zooming:
             var factor = (event.position - zoom_start)
             factor.x = pow(1.01, factor.x)
@@ -193,6 +207,6 @@ func draw_axes():
 func _draw():
     draw_axes()
     for sequence in sequences:
-        draw_polyline(sequence.display_polyline, sequence.draw_color, 1.0, true)
+        draw_polyline_colors(sequence.display_polyline, sequence.point_colors, 1.0, true)
         for i in range(len(sequence.display_polyline)):
             draw_circle(sequence.display_polyline[i], 3, sequence.point_colors[i] )

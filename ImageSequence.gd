@@ -31,28 +31,34 @@ func highlight(image_id):
 
 func _on_RemoveButton_pressed():
     graph_sequence.delete()
-#    graph_node.sequences.remove(graph_node.sequences.find(graph_sequence))
+
+func _on_ReloadButton_pressed():
+    pass # replace with function body
+
+func _on_GoToButton_pressed():
+    graph_sequence.go_to()
+
+func line_from_rect(rect, width=1.0, position=Vector2()):
+    width = Vector2(width, width)
+    var line = [Vector2(position) - width / 2.0,
+                Vector2(position) - width / 2.0 + Vector2(rect) * Vector2(1.0, 0.0),
+                Vector2(position) - width / 2.0 + Vector2(rect) * Vector2(1.0, 1.0),
+                Vector2(position) - width / 2.0 + Vector2(rect) * Vector2(0.0, 1.0),
+                Vector2(position) - width / 2.0]
+    return line
 
 func draw_highlight():
     if do_highlight:
         var position = images[highlight_id].rect_position
         var size = images[highlight_id].rect_size
-        var width = Vector2(2.0, 2.0)
-        var line = [Vector2(position) + size / 2.0 - width / 2.0,
-                    Vector2(position) + Vector2(size) * Vector2(1.0, 0.0) + size / 2.0 - width / 2.0,
-                    Vector2(position) + Vector2(size) * Vector2(1.0, 1.0) + size / 2.0 - width / 2.0,
-                    Vector2(position) + Vector2(size) * Vector2(0.0, 1.0) + size / 2.0 - width / 2.0,
-                    Vector2(position)                                     + size / 2.0 - width / 2.0]
-        draw_polyline(line, Color(0.5, 0.6, 0.5), width.x, true)
+        var width = 2.0
+        var line = line_from_rect(size, width, position + size/2)
+        draw_polyline(line, Color(0.5, 0.6, 0.5), width, true)
 
 func draw_border():
-    var line = [Vector2(0.0, 0.0),
-                Vector2(rect_size.x, 0.0),
-                rect_size,
-                Vector2(0.0, rect_size.y),
-                Vector2(0.0, 0.0)
-                ]
-    draw_polyline(line, self.color, 1.0, true)
+    var width = 1.0
+    var line = line_from_rect(rect_size, width)
+    draw_polyline(line, self.color, width, true)
 
 func _draw():
     draw_highlight()

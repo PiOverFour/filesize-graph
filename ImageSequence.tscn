@@ -61,7 +61,6 @@ _sections_unfolded = [ "Size Flags", "Theme" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." index="1"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -97,7 +96,7 @@ scroll_horizontal = 0
 scroll_vertical_enabled = true
 scroll_vertical = 0
 scroll_deadzone = 0
-_sections_unfolded = [ "Scroll", "Size Flags" ]
+_sections_unfolded = [ "Anchor", "Rect", "Scroll", "Size Flags" ]
 
 [node name="ImageContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer" index="0"]
 
@@ -152,7 +151,57 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
 
-[node name="RemoveButton" type="Button" parent="VBoxContainer/ButtonContainer" index="0"]
+[node name="GoToButton" type="Button" parent="VBoxContainer/ButtonContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 96.0
+margin_right = 145.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Go To"
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="ReloadButton2" type="Button" parent="VBoxContainer/ButtonContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 149.0
+margin_right = 204.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Reload"
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="RemoveButton2" type="Button" parent="VBoxContainer/ButtonContainer" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -177,7 +226,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="DeleteSelectedButton" type="Button" parent="VBoxContainer/ButtonContainer" index="1"]
+[node name="DeleteSelectedButton" type="Button" parent="VBoxContainer/ButtonContainer" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -202,6 +251,10 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[connection signal="pressed" from="VBoxContainer/ButtonContainer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/GoToButton" to="." method="_on_GoToButton_pressed"]
+
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/ReloadButton2" to="." method="_on_ReloadButton_pressed"]
+
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/RemoveButton2" to="." method="_on_RemoveButton_pressed"]
 
 
