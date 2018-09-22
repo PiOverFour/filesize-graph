@@ -7,21 +7,35 @@ export(NodePath) var sequences_container
 const sequence_panel_scene = preload("res://ImageSequence.tscn")
 
 var graph_transform = Transform2D()
+
 var zoom_speed = 1.1
 var zoom_start
 var zoom_start_transform = Transform2D()
 
+var select_rect = Rect2(0, 0, 0, 0)
+
 var is_dragging = false
 var is_zooming = false
+var is_selecting = false
 
 var default_font
+
+class Image:
+    var coor
+    var display_coor
+    var is_empty
+    var is_missing
+    var color
+    var is_active
+    var is_selected
+    var filepath
 
 class Sequence:
     var polyline
     var display_polyline
     var draw_color
     var graph
-    var active_color = Color(1.0, 1.0, 1.0)
+    const active_color = Color(1.0, 1.0, 1.0)
     var point_colors = []
 
     var sequence_panel
@@ -65,6 +79,7 @@ class Sequence:
         else:
             self.sequence_panel.highlight(-1)
             self.highlight(-1)
+        self.graph.update()
 
     func highlight(image_id):
         for i in len(self.polyline):
@@ -72,7 +87,6 @@ class Sequence:
                 point_colors[i] = self.draw_color
             else:
                 point_colors[i] = self.active_color
-        self.graph.update()
 
     func go_to():
         var min_x = INF
@@ -105,7 +119,6 @@ class Sequence:
         self.sequences_container.remove_child(self.sequence_panel)
         self.sequence_panel.queue_free()
         self.graph.sequences.remove(self.graph.sequences.find(self))
-        print(len(graph.sequences))
         self.sequences_container.get_node("DragHereLabel").visible = len(graph.sequences) < 1
         self.graph.update()
 
@@ -160,18 +173,24 @@ func _gui_input(event):
             else:
                 # Activate drag
                 is_dragging = event.pressed
-                if is_dragging:
-                    mouse_default_cursor_shape = Control.CURSOR_DRAG
-                else:
-                    mouse_default_cursor_shape = Control.CURSOR_ARROW
                 update()
+            if is_dragging or is_zooming:
+                mouse_default_cursor_shape = Control.CURSOR_DRAG
+            else:
+                mouse_default_cursor_shape = Control.CURSOR_ARROW
+        elif event.button_index == BUTTON_LEFT:
+            # Select
+            is_selecting = event.pressed
+            select_rect.position = event.position
+            select_rect.end = event.position
+            update()
         # Zoom
         elif event.button_index == BUTTON_WHEEL_UP:
             zoom_graph(event.position, Vector2(zoom_speed, zoom_speed))
         elif event.button_index == BUTTON_WHEEL_DOWN:
             zoom_graph(event.position, Vector2(1/zoom_speed, 1/zoom_speed))
-    # Drag
-    if event is InputEventMouseMotion:
+
+    elif event is InputEventMouseMotion:
         if is_dragging:
             graph_transform.origin += event.relative
             update_graph()
@@ -182,6 +201,9 @@ func _gui_input(event):
             zoom_graph(rect_size / 2,
                        factor,
                        zoom_start_transform)
+        elif is_selecting:
+            select_rect.end = event.position
+            update_graph()
         else:
             for sequence in sequences:
                 sequence.find_close_point(event.position)
@@ -216,9 +238,20 @@ func draw_axes():
                   draw_color, 1.0, true)
         draw_string(default_font, graph_transform * Vector2(lower_corner.x, y), str(y), draw_color)
 
+func draw_selection_rect():
+    var polyline = [select_rect.position,
+                select_rect.position + Vector2(select_rect.size.x, 0),
+                select_rect.position + select_rect.size,
+                select_rect.position + Vector2(0, select_rect.size.y),
+                select_rect.position]
+    draw_polyline(polyline, Color(1,1,1), 1.0, true)
+
+
 func _draw():
     draw_axes()
     for sequence in sequences:
         draw_polyline_colors(sequence.display_polyline, sequence.point_colors, 1.0, true)
         for i in range(len(sequence.display_polyline)):
             draw_circle(sequence.display_polyline[i], 3, sequence.point_colors[i] )
+    if is_selecting:
+        draw_selection_rect()
