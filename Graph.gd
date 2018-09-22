@@ -220,9 +220,9 @@ func draw_axes():
     var step_x = pow(10, floor(scale_x))
     var step_y = pow(10, floor(scale_y))
     var lower_x_int = lower_corner.x - fmod(lower_corner.x, step_x) - step_x
-    var upper_x_int = upper_corner.x - fmod(upper_corner.x, step_x) + step_x*2
+    var upper_x_int = upper_corner.x - fmod(upper_corner.x, step_x) + step_x
     var lower_y_int = lower_corner.y - fmod(lower_corner.y, step_y) - step_y
-    var upper_y_int = upper_corner.y - fmod(upper_corner.y, step_y) + step_y*2
+    var upper_y_int = upper_corner.y - fmod(upper_corner.y, step_y) + step_y
 
     var draw_color = Color(1.0, 1.0, 1.0, 0.1)
 
@@ -248,6 +248,9 @@ func draw_selection_rect():
 
 
 func _draw():
+    var canvas_rid = get_canvas_item()
+    VisualServer.canvas_item_set_clip(canvas_rid, true)
+    VisualServer.canvas_item_set_custom_rect(canvas_rid, true, Rect2(Vector2(), rect_size))
     draw_axes()
     for sequence in sequences:
         draw_polyline_colors(sequence.display_polyline, sequence.point_colors, 1.0, true)
