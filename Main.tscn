@@ -27,6 +27,7 @@ __meta__ = {
 "_edit_horizontal_guides_": [  ]
 }
 graph = NodePath("VBoxContainer/HSplitContainer/ColorRect/GraphContainer/Graph")
+sequences_container = NodePath("VBoxContainer/HSplitContainer/SequencesContainer")
 
 [node name="FileDialog" type="FileDialog" parent="." index="0"]
 
@@ -275,7 +276,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 4 )
 _sections_unfolded = [ "Grow Direction", "Margin", "Mouse", "Rect", "Size Flags", "Visibility" ]
-sequences_container = NodePath("../../../SequencesContainer")
 
 [node name="SequencesContainer" type="VBoxContainer" parent="VBoxContainer/HSplitContainer" index="1"]
 
@@ -319,5 +319,7 @@ max_lines_visible = -1
 [node name="Sprite" type="Sprite" parent="." index="3"]
 
 [connection signal="files_selected" from="FileDialog" to="." method="process_files"]
+
+[connection signal="point_highlighted" from="VBoxContainer/HSplitContainer/ColorRect/GraphContainer/Graph" to="." method="highlight_image_in_panel"]
 
 

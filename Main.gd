@@ -1,6 +1,11 @@
 extends Control
 
 export(NodePath) var graph
+export(NodePath) var sequences_container
+const sequence_panel_scene = preload("res://ImageSequence.tscn")
+
+var sequence_panels = []
+
 var rexp = RegEx.new()
 
 func _ready():
@@ -98,8 +103,23 @@ func process_files(filepaths):
             min_frame = frame[1]
         polyline.append(Vector2(i, size))
         i += 1
-    get_node(graph).add_sequence(polyline, sequence[0][0], Color(0.2, 0.2, 1.0))
+    var curve = get_node(graph).add_curve(polyline, sequence[0][0], Color(0.2, 0.2, 1.0))
+    create_sequence_panel(curve)
 
+func create_sequence_panel(curve):
+    var sequence_panel = sequence_panel_scene.instance()
+    get_node(sequences_container).add_child(sequence_panel)
+    get_node(sequences_container).get_node("DragHereLabel").visible = not len(get_node(graph).curves)
+    sequence_panel.graph_node = get_node(graph)
+    sequence_panel.main_node = self
+    sequence_panel.curve = curve
+    sequence_panel.color = curve.draw_color
+    for i in range(len(curve.points)):
+        sequence_panel.add_image(i, str(curve.points[i].coordinates))
+    sequence_panels.append(sequence_panel)
+
+func highlight_image_in_panel(curve_id, image_id):
+    sequence_panels[curve_id].highlight(image_id)
 
 func drop_files(files, screen):
     if len(files) == 1:

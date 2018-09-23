@@ -1,7 +1,8 @@
 extends PanelContainer
 
+var main_node
 var graph_node
-var graph_sequence
+var curve
 var do_highlight = false
 var highlight_id = 0
 var color
@@ -10,8 +11,6 @@ export(NodePath) var image_container
 var images = []
 const image_scene = preload("res://Image.tscn")
 
-#func setup():
-#    $BG.color = self.color
 
 func select_image(image_id):
     var img = $ScrollContainer/GridContainer.get_child(image_id)
@@ -20,27 +19,33 @@ func select_image(image_id):
     $Popup.rect_position = xform
 
 func add_image(image_id, image_path):
-#    var image_node = ColorRect.new()
     var image_node = image_scene.instance()
     image_node.rect_min_size = Vector2(16, 16)
-    image_node.graph_sequence = graph_sequence
+    image_node.curve = curve
     image_node.image_id = image_id
     images.append(image_node)
     get_node(image_container).add_child(image_node)
 
 func highlight(image_id):
-#    do_highlight = image_id != -1
-#    highlight_id = image_id
+    do_highlight = image_id != -1
+    highlight_id = image_id
     self.update()
 
 func _on_RemoveButton_pressed():
-    graph_sequence.delete()
+    graph_node.curves.erase(curve)
+    print(graph_node.curves)
+    curve.delete()
+    
+    get_parent().get_node("DragHereLabel").visible = not len(graph_node.curves)
+    get_parent().remove_child(self)
+    main_node.sequence_panels.erase(self)
+    self.queue_free()
 
 func _on_ReloadButton_pressed():
     pass # replace with function body
 
 func _on_GoToButton_pressed():
-    graph_sequence.go_to()
+    curve.zoom_to()
 
 func line_from_rect(rect, width=1.0, position=Vector2()):
     width = Vector2(width, width)
