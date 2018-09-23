@@ -29,8 +29,8 @@ func add_image(image_id, image_path):
     get_node(image_container).add_child(image_node)
 
 func highlight(image_id):
-    do_highlight = image_id != -1
-    highlight_id = image_id
+#    do_highlight = image_id != -1
+#    highlight_id = image_id
     self.update()
 
 func _on_RemoveButton_pressed():
