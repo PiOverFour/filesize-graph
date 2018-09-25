@@ -38,7 +38,7 @@ func _on_RemoveButton_pressed():
     
     get_parent().get_node("DragHereLabel").visible = not len(graph_node.curves)
     get_parent().remove_child(self)
-    main_node.sequence_panels.erase(self)
+    main_node.sequences.erase(self)
     self.queue_free()
 
 func _on_ReloadButton_pressed():

@@ -1,11 +1,58 @@
 extends Control
 
-export(NodePath) var graph
-export(NodePath) var sequences_container
+export(NodePath) var graph_node
+export(NodePath) var sequences_container_node
 const sequence_panel_scene = preload("res://ImageSequence.tscn")
 
-var sequence_panels = []
+var sequences = []
 
+class Image:
+    var frame
+    var size
+    var filepath
+    var is_existing
+    var is_empty
+    var is_selected = false
+    
+    func _init(frame, size, filepath, is_existing, is_empty):
+        self.frame = frame
+        self.size = size
+        self.filepath = filepath
+        self.is_existing = is_existing
+        self.is_empty = is_empty
+    
+class Sequence:
+    var sequence_panel
+    var main_node
+    var graph_node
+    var curve
+    var images = []
+    
+    func _init(main_node, graph_node, sequences_container_node):
+        self.main_node = main_node
+        self.graph_node = graph_node
+    
+    func create_graph_curve():
+        var polyline = []
+        for image in self.images:
+            polyline.append(Vector2(image.frame, image.size))
+        self.curve = self.graph_node.add_curve(polyline)
+        
+    func create_sequence_panel():
+        self.sequence_panel = self.main_node.sequence_panel_scene.instance()
+        main_node.get_node(main_node.sequences_container_node).add_child(sequence_panel)
+        main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
+        sequence_panel.graph_node = graph_node
+        sequence_panel.main_node = main_node
+        sequence_panel.curve = self.curve
+        sequence_panel.color = self.curve.draw_color
+        for i in range(len(self.images)):
+            self.sequence_panel.add_image(i, str(self.curve.points[i].coordinates))
+    
+    func add_image(frame, size, filepath, is_existing, is_empty):
+        self.images.append(Image.new(frame, size, filepath, is_existing, is_empty))
+        
+    
 var rexp = RegEx.new()
 
 func _ready():
@@ -50,9 +97,9 @@ func get_sequence_from_file(filepath):
             pattern = name_frame[0]
             frame_number = name_frame[1]
             if pattern == base_pattern:
-                frames.append([dirname.plus_file(file_name), frame_number])
+                frames.append([frame_number, dirname.plus_file(file_name)])
             file_name = dir.get_next()
-    return frames
+    return frames  # [frame_number, filepath]
 
 
 # FS operation
@@ -71,55 +118,40 @@ func process_single_file(filepath):
     var filepaths = get_sequence_from_file(filepath)
     process_files(filepaths)
 
+static func image_sort(a, b):
+    return a[1] < b[1]
 
 func process_files(filepaths):
-    var sequence
     # Get sequence if only one file is passed
     if typeof(filepaths) == TYPE_STRING_ARRAY and len(filepaths) == 1:
-        sequence = get_sequence_from_file(filepaths[0])
-    else:
-        sequence = filepaths
-    sequence = Array(sequence)
-    sequence.sort()
+        filepaths = get_sequence_from_file(filepaths[0])
+    filepaths = Array(filepaths)
+    filepaths.sort_custom(self, 'image_sort')
 
     # Update graph
     var i = 0
     var size
-    var min_size = INF
-    var max_size = 0
-    var min_frame = INF
-    var max_frame = 0
-    var polyline = []
-    for frame in sequence:
-        size = get_size(frame[0])
-        # Get extrema
-        if size > max_size:
-            max_size = size
-        if size < min_size:
-            min_size = size
-        if frame[1] > max_frame:
-            max_frame = frame[1]
-        if frame[1] < min_frame:
-            min_frame = frame[1]
-        polyline.append(Vector2(i, size))
-        i += 1
-    var curve = get_node(graph).add_curve(polyline, sequence[0][0], Color(0.2, 0.2, 1.0))
-    create_sequence_panel(curve)
+    
+    var sequence = Sequence.new(self, get_node(graph_node), get_node(sequences_container_node))
+    for frame in filepaths:
+        size = get_size(frame[1])
+        
+        sequence.add_image(frame[0], size, frame[1], size == -1, size == 0)
+#        # Get extrema
+#        if size > max_size:
+#            max_size = size
+#        if size < min_size:
+#            min_size = size
+#        if frame[1] > max_frame:
+#            max_frame = frame[1]
+#        if frame[1] < min_frame:
+#            min_frame = frame[1]
+    sequence.create_graph_curve()
+    sequence.create_sequence_panel()
+    sequences.append(sequence)
 
-func create_sequence_panel(curve):
-    var sequence_panel = sequence_panel_scene.instance()
-    get_node(sequences_container).add_child(sequence_panel)
-    get_node(sequences_container).get_node("DragHereLabel").visible = not len(get_node(graph).curves)
-    sequence_panel.graph_node = get_node(graph)
-    sequence_panel.main_node = self
-    sequence_panel.curve = curve
-    sequence_panel.color = curve.draw_color
-    for i in range(len(curve.points)):
-        sequence_panel.add_image(i, str(curve.points[i].coordinates))
-    sequence_panels.append(sequence_panel)
-
-func highlight_image_in_panel(curve_id, image_id):
-    sequence_panels[curve_id].highlight(image_id)
+func highlight_image_in_panel(sequence_id, image_id):
+    sequences[sequence_id].sequence_panel.highlight(image_id)
 
 func drop_files(files, screen):
     if len(files) == 1:

@@ -1,10 +1,11 @@
 extends Control
 
 signal point_highlighted(curve, point_id)
+signal points_selected(curves)  # [[id, [p, ...]], ...]
 
 var curves = []
 
-var graph_transform = Transform2D()
+var graph_transform
 
 var zoom_speed = 1.1
 var zoom_start
@@ -21,20 +22,16 @@ var default_font
 class Point:
     var coordinates
     var display_coordinates
-    var is_empty
-    var is_missing
     var color
     var is_active
     var is_selected
-    var filepath
 
-    func _init(coordinates, color, filepath):
+    func _init(coordinates, color):
         self.coordinates = coordinates
         self.display_coordinates = coordinates
         self.color = color
-        self.filepath = filepath
 
-class Curve:
+class GraphCurve:
     var draw_color
     var points = []
     var graph
@@ -47,10 +44,10 @@ class Curve:
         color.h = randf()
         return color
 
-    func _init(points, color, graph):
-        color = get_random_color()
+    func _init(graph, points):
+        var color = get_random_color()
         for p in points:
-            self.points.append(Point.new(p, color, ''))
+            self.points.append(Point.new(p, color))
         self.draw_color = color
         self.graph = graph
         self.zoom_to()
@@ -98,8 +95,8 @@ class Curve:
         self.graph.curves.remove(self.graph.curves.find(self))
         self.graph.update()
 
-func add_curve(points, name, color):
-    var curve = Curve.new(points, color, self)
+func add_curve(points):
+    var curve = GraphCurve.new(self, points)
     curves.append(curve)
     update_graph()
     return curve
@@ -108,6 +105,7 @@ func _ready():
     randomize()
     var label = Label.new()
     default_font = label.get_font("")
+    graph_transform = Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, -rect_size.y))
     update_graph()
 
 func update_graph():
@@ -125,7 +123,12 @@ func zoom_graph(center, factor, base_transform=graph_transform):
     update_graph()
 
 func zoom_to(origin, size):
-    graph_transform = Transform2D(Vector2(rect_size.x / size.x, 0.0), Vector2(0.0, rect_size.y / size.y), origin * -rect_size / size)
+    graph_transform = (Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, 0))  # y-inverted transform, to account for y-down coordinate system, multiplied by...
+                       * Transform2D(Vector2(rect_size.x / size.x, 0.0),  # a transform whose x vector fits the graph into window
+                                     Vector2(0.0, rect_size.y / size.y),  # same for y
+                                     origin * -rect_size / size   # the offset is scaled as well
+                                     - Vector2(0, rect_size.y))   # and a full vertical window is subtracted
+                                    )
     update_graph()
 
 func _gui_input(event):
