@@ -35,7 +35,7 @@ func _on_RemoveButton_pressed():
     graph_node.curves.erase(curve)
     print(graph_node.curves)
     curve.delete()
-    
+
     get_parent().get_node("DragHereLabel").visible = not len(graph_node.curves)
     get_parent().remove_child(self)
     main_node.sequences.erase(self)
@@ -71,4 +71,4 @@ func draw_border():
 
 func _draw():
     draw_highlight()
-    draw_border()
+#    draw_border()

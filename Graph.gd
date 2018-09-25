@@ -22,14 +22,19 @@ var default_font
 class Point:
     var coordinates
     var display_coordinates
+    var base_color
     var color
     var is_active
     var is_selected
 
-    func _init(coordinates, color):
-        self.coordinates = coordinates
+    func _init(frame, size, color):
+        self.coordinates = Vector2(frame, size)
         self.display_coordinates = coordinates
-        self.color = color
+        if coordinates.y:
+            self.color = color
+        else:
+            self.color = Color(1.0, 0.0, 0.0)
+        self.base_color = self.color
 
 class GraphCurve:
     var draw_color
@@ -44,13 +49,12 @@ class GraphCurve:
         color.h = randf()
         return color
 
-    func _init(graph, points):
-        var color = get_random_color()
-        for p in points:
-            self.points.append(Point.new(p, color))
-        self.draw_color = color
+    func _init(graph):
+        self.draw_color = get_random_color()
         self.graph = graph
-        self.zoom_to()
+
+    func add_point(frame, size, color=self.draw_color):
+        self.points.append(Point.new(frame, size, color))
 
     func find_close_point(position):
         var min_distance = INF
@@ -69,7 +73,7 @@ class GraphCurve:
     func highlight(closest_point):
         for p in self.points:
             if closest_point == null or p != closest_point:
-                p.color = self.draw_color
+                p.color = p.base_color
             else:
                 p.color = self.active_color
 
@@ -95,8 +99,8 @@ class GraphCurve:
         self.graph.curves.remove(self.graph.curves.find(self))
         self.graph.update()
 
-func add_curve(points):
-    var curve = GraphCurve.new(self, points)
+func add_curve():
+    var curve = GraphCurve.new(self)
     curves.append(curve)
     update_graph()
     return curve
