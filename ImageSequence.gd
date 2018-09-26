@@ -30,7 +30,7 @@ func add_image(image_id, image_path):
 func highlight(image_id):
     do_highlight = image_id != -1
     highlight_id = image_id
-    self.update()
+    get_node("VBoxContainer/ScrollContainer/ImageContainer").update()
 
 func _on_RemoveButton_pressed():
     main_sequence.remove()
@@ -54,19 +54,10 @@ func line_from_rect(rect, width=1.0, position=Vector2()):
                 Vector2(position) - width / 2.0]
     return line
 
-func draw_highlight():
-    if do_highlight:
-        var position = images[highlight_id].rect_position
-        var size = images[highlight_id].rect_size
-        var width = 2.0
-        var line = line_from_rect(size, width, position + size/2)
-        draw_polyline(line, Color(0.5, 0.6, 0.5), width, true)
-
 func draw_border():
     var width = 1.0
     var line = line_from_rect(rect_size, width)
     draw_polyline(line, self.color, width, true)
 
 func _draw():
-    draw_highlight()
-#    draw_border()
+    draw_border()

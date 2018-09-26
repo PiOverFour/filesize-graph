@@ -172,17 +172,15 @@ func get_size(filepath):
 
 # App stuff
 
-func process_single_file(filepath):
-    var filepaths = get_sequence_from_file(filepath)
-    process_files(filepaths)
-
 static func image_sort(a, b):
     return a[0] < b[0]
 
 func process_files(filepaths):
     # Get sequence if only one file is passed
-    if typeof(filepaths) == TYPE_STRING_ARRAY and len(filepaths) == 1:
+    if typeof(filepaths) == TYPE_STRING_ARRAY:
         filepaths = get_sequence_from_file(filepaths[0])
+    elif typeof(filepaths) == TYPE_STRING:
+        filepaths = get_sequence_from_file(filepaths)
     var pattern = filepaths[0]
     var frames = filepaths[1]
     frames = Array(frames)  # Make sortable (?)
@@ -202,15 +200,11 @@ func process_files(filepaths):
     sequences.append(sequence)
 
 func drop_files(files, screen):
-    if len(files) == 1:
-        process_single_file(files[0])
-    elif len(files) > 1:
-        process_files(files)
+    process_files(files)
 
 
 func _on_Graph_points_selected(curves):
     for c in curves:
-        print(c, ' ', curves[c])
         for i in range(len(sequences[c].images)):
             sequences[c].images[i].is_selected = i in curves[c]
 
