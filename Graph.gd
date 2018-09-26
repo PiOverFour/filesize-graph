@@ -109,7 +109,7 @@ func _ready():
     randomize()
     var label = Label.new()
     default_font = label.get_font("")
-    graph_transform = Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, -rect_size.y))
+    graph_transform = Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, rect_size.y))
     update_graph()
 
 func update_graph():
@@ -198,35 +198,49 @@ func _gui_input(event):
                     curve.highlight(null)
             update_graph()
 
-func log10(x):
-    return log(x)/log(10)
+#func log10(x):
+#    return log(x)/log(10)
 
+func sizeof_fmt(num, suffix='B'):
+    """From https://stackoverflow.com/a/1094933/4561348"""
+    if abs(num) < 1024.0:
+        return "%3d%s%s" % [num, '', suffix]
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % [num, unit, suffix]
+        num /= 1024.0
+    return "%3.1f%s%s" % [num, 'Yi', suffix]
+    
 func draw_axes():
-    var lower_corner = graph_transform.affine_inverse() * Vector2(0, 0)
-    var upper_corner = graph_transform.affine_inverse() * rect_size
+    var draw_color = Color(1.0, 1.0, 1.0, 0.1)
+
+    var lower_corner = graph_transform.affine_inverse() * Vector2(0, rect_size.y)
+    var upper_corner = graph_transform.affine_inverse() * Vector2(rect_size.x, 0)
+#    print(graph_transform)
     var size = upper_corner - lower_corner
-    var scale_x = log10(size.x)
-    var scale_y = log10(size.y)
-    var step_x = pow(10, floor(scale_x))
-    var step_y = pow(10, floor(scale_y))
+
+    var scale_x = log(size.x)/log(10)
+    var scale_y = log(size.y)/log(2)
+
+    var step_x = max(pow(10, floor(scale_x)), 1)
+    var step_y = max(pow(2, floor(scale_y)), 4)
+
     var lower_x_int = lower_corner.x - fmod(lower_corner.x, step_x) - step_x
     var upper_x_int = upper_corner.x - fmod(upper_corner.x, step_x) + step_x
     var lower_y_int = lower_corner.y - fmod(lower_corner.y, step_y) - step_y
     var upper_y_int = upper_corner.y - fmod(upper_corner.y, step_y) + step_y
 
-    var draw_color = Color(1.0, 1.0, 1.0, 0.1)
-
-    for x in range(lower_x_int, upper_x_int, step_x/2):
+    for x in range(lower_x_int, upper_x_int, step_x):
         draw_line(graph_transform * Vector2(x, lower_corner.y),
                   graph_transform * Vector2(x, upper_corner.y),
                   draw_color, 1.0, true)
-        draw_string(default_font, graph_transform * Vector2(x, upper_corner.y), str(x), draw_color)
+        draw_string(default_font, graph_transform * Vector2(x, lower_corner.y), str(x), draw_color)
 
-    for y in range(lower_y_int, upper_y_int, step_y/2):
+    for y in range(lower_y_int, upper_y_int, step_y/4):
         draw_line(graph_transform * Vector2(lower_corner.x, y),
                   graph_transform * Vector2(upper_corner.x, y),
                   draw_color, 1.0, true)
-        draw_string(default_font, graph_transform * Vector2(lower_corner.x, y), str(y), draw_color)
+        draw_string(default_font, graph_transform * Vector2(lower_corner.x, y), str(sizeof_fmt(y)), draw_color)
 
 func draw_selection_rect():
     var polyline = [select_rect.position,
@@ -236,14 +250,7 @@ func draw_selection_rect():
                 select_rect.position]
     draw_polyline(polyline, Color(1,1,1), 1.0, true)
 
-
-func _draw():
-    # Prevent drawing outside canvas
-    var canvas_rid = get_canvas_item()
-    VisualServer.canvas_item_set_clip(canvas_rid, true)
-    VisualServer.canvas_item_set_custom_rect(canvas_rid, true, Rect2(Vector2(), rect_size))
-
-    draw_axes()
+func draw_curves():
     var polyline
     var colors
     for curve in curves:
@@ -255,5 +262,14 @@ func _draw():
         draw_polyline_colors(polyline, colors, 1.0, true)
         for p in curve.points:
             draw_circle(p.display_coordinates, 3, p.color)
+
+func _draw():
+    # Prevent drawing outside canvas
+    var canvas_rid = get_canvas_item()
+    VisualServer.canvas_item_set_clip(canvas_rid, true)
+    VisualServer.canvas_item_set_custom_rect(canvas_rid, true, Rect2(Vector2(), rect_size))
+
+    draw_axes()
+    draw_curves()
     if is_selecting:
         draw_selection_rect()
