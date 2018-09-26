@@ -305,7 +305,9 @@ flat = false
 align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[connection signal="pressed" from="VBoxContainer/ButtonContainer/ZoomToButton" to="." method="_on_GoToButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonContainer2/DeleteSelectedButton" to="." method="_on_DeleteSelectedButton_pressed"]
+
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/ZoomToButton" to="." method="_on_ZoomToButton_pressed"]
 
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/ReloadButton2" to="." method="_on_ReloadButton_pressed"]
 

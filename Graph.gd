@@ -1,6 +1,6 @@
 extends Control
 
-signal point_highlighted(curve, point_id)
+signal point_highlighted(curve_id, point_id)
 signal points_selected(curves)  # [[id, [p, ...]], ...]
 
 var curves = []
@@ -36,6 +36,14 @@ class Point:
             self.color = Color(1.0, 0.0, 0.0)
         self.base_color = self.color
 
+    func update_color():
+        if self.is_active:
+            self.color = Color(1.0, 1.0, 1.0)
+        elif self.is_selected:
+            self.color = self.base_color.lightened(0.4)
+        else:
+            self.color = self.base_color
+
 class GraphCurve:
     var draw_color
     var points = []
@@ -70,12 +78,25 @@ class GraphCurve:
         min_distance = sqrt(min_distance)
         return [closest_point_id, min_distance]
 
+    func find_points_in_rect(rect):
+        rect = rect.abs()
+        var selected_points = []
+        for p in self.points:
+            if rect.has_point(p.display_coordinates):
+                selected_points.append(self.points.find(p))
+                p.is_selected = true
+            else:
+                p.is_selected = false
+            p.update_color()
+        return selected_points
+
     func highlight(closest_point):
         for p in self.points:
             if closest_point == null or p != closest_point:
-                p.color = p.base_color
+                p.is_active = false
             else:
-                p.color = self.active_color
+                p.is_active = true
+            p.update_color()
 
     func zoom_to():
         var min_x = INF
@@ -158,8 +179,11 @@ func _gui_input(event):
         elif event.button_index == BUTTON_LEFT:
             # Select
             is_selecting = event.pressed
-            select_rect.position = event.position
-            select_rect.end = event.position
+            if not event.pressed:
+                select()
+            else:
+                select_rect.position = event.position
+                select_rect.end = event.position
             update()
         # Zoom
         elif event.button_index == BUTTON_WHEEL_UP:
@@ -198,8 +222,12 @@ func _gui_input(event):
                     curve.highlight(null)
             update_graph()
 
-#func log10(x):
-#    return log(x)/log(10)
+func select():
+    var selected_curves = {}
+    for i in range(len(curves)):
+        selected_curves[i] = curves[i].find_points_in_rect(select_rect)
+    update_graph()
+    emit_signal("points_selected", selected_curves)
 
 func sizeof_fmt(num, suffix='B'):
     """From https://stackoverflow.com/a/1094933/4561348"""
@@ -210,13 +238,12 @@ func sizeof_fmt(num, suffix='B'):
             return "%3.1f%s%s" % [num, unit, suffix]
         num /= 1024.0
     return "%3.1f%s%s" % [num, 'Yi', suffix]
-    
+
 func draw_axes():
     var draw_color = Color(1.0, 1.0, 1.0, 0.1)
 
     var lower_corner = graph_transform.affine_inverse() * Vector2(0, rect_size.y)
     var upper_corner = graph_transform.affine_inverse() * Vector2(rect_size.x, 0)
-#    print(graph_transform)
     var size = upper_corner - lower_corner
 
     var scale_x = log(size.x)/log(10)

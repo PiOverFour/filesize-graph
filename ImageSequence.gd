@@ -2,6 +2,7 @@ extends PanelContainer
 
 var main_node
 var graph_node
+var main_sequence
 var curve
 var do_highlight = false
 var highlight_id = 0
@@ -32,19 +33,16 @@ func highlight(image_id):
     self.update()
 
 func _on_RemoveButton_pressed():
-    graph_node.curves.erase(curve)
-    print(graph_node.curves)
-    curve.delete()
-
-    get_parent().get_node("DragHereLabel").visible = not len(graph_node.curves)
-    get_parent().remove_child(self)
-    main_node.sequences.erase(self)
+    main_sequence.remove()
     self.queue_free()
+
+func _on_DeleteSelectedButton_pressed():
+    main_sequence.delete_selected()
 
 func _on_ReloadButton_pressed():
     pass # replace with function body
 
-func _on_GoToButton_pressed():
+func _on_ZoomToButton_pressed():
     curve.zoom_to()
 
 func line_from_rect(rect, width=1.0, position=Vector2()):

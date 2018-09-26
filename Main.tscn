@@ -322,4 +322,8 @@ max_lines_visible = -1
 
 [connection signal="point_highlighted" from="VBoxContainer/HSplitContainer/ColorRect/GraphContainer/Graph" to="." method="highlight_image_in_panel"]
 
+[connection signal="point_highlighted" from="VBoxContainer/HSplitContainer/ColorRect/GraphContainer/Graph" to="." method="_on_Graph_point_highlighted"]
+
+[connection signal="points_selected" from="VBoxContainer/HSplitContainer/ColorRect/GraphContainer/Graph" to="." method="_on_Graph_points_selected"]
+
 

@@ -53,7 +53,6 @@ class Sequence:
             else:
                 self.curve.add_point(image.frame, image.size)
         self.curve.zoom_to()
-#            polyline.append(Vector2(image.frame, image.size))
 
     func add_image(frame, size, filepath, is_existing, is_empty):
         self.images.append(Image.new(frame, size, filepath, is_existing, is_empty))
@@ -64,6 +63,7 @@ class Sequence:
         main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
         sequence_panel.graph_node = graph_node
         sequence_panel.main_node = main_node
+        sequence_panel.main_sequence = self
         sequence_panel.curve = self.curve
         sequence_panel.color = self.curve.draw_color
         for i in range(len(self.images)):
@@ -81,6 +81,23 @@ class Sequence:
                 self.max_frame = frame
             if frame < self.min_frame:
                 self.min_frame = frame
+
+    func delete_selected():
+        var dir = Directory.new()
+        for image in self.images:
+            if image.is_selected:
+                if dir.file_exists(image.filepath):
+                    print('Deleting ', image.filepath)
+                    if dir.remove(image.filepath) != OK:
+                        print('Could not delete ', image.filepath)
+
+    func remove():
+        self.graph_node.curves.erase(curve)
+        self.curve.delete()
+
+        main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
+        main_node.get_node(main_node.sequences_container_node).remove_child(self.sequence_panel)
+        main_node.sequences.erase(self)
 
 
 # Filename manipulation
@@ -139,11 +156,11 @@ func get_sequence_from_file(file_path):
         if not i in frames:
             frames[i] = -1
 
-    # Convert to array, to sort
+    # Convert to array, to allow sorting
     var frames_array = []
     for f in frames:
         frames_array.append([f, frames[f]])
-    return [pattern, frames_array]  # [pattern, [[frame_number, size], ...]]
+    return [base_pattern, frames_array]  # [pattern, [[frame_number, size], ...]]
 
 func get_size(filepath):
     var file = File.new()
@@ -178,17 +195,24 @@ func process_files(filepaths):
     for frame in frames:
         size = frame[1]
         filepath = pattern % frame[0]
-        sequence.add_image(frame[0], size, filepath, size == -1, size == 0)
+        sequence.add_image(frame[0], size, filepath, size != -1, size == 0)
 
     sequence.create_graph_curve()
     sequence.create_sequence_panel()
     sequences.append(sequence)
-
-func highlight_image_in_panel(sequence_id, image_id):
-    sequences[sequence_id].sequence_panel.highlight(image_id)
 
 func drop_files(files, screen):
     if len(files) == 1:
         process_single_file(files[0])
     elif len(files) > 1:
         process_files(files)
+
+
+func _on_Graph_points_selected(curves):
+    for c in curves:
+        print(c, ' ', curves[c])
+        for i in range(len(sequences[c].images)):
+            sequences[c].images[i].is_selected = i in curves[c]
+
+func _on_Graph_point_highlighted(sequence_id, image_id):
+    sequences[sequence_id].sequence_panel.highlight(image_id)
