@@ -16,8 +16,8 @@ boot_splash/fullsize=false
 
 [display]
 
-window/size/width=540
-window/size/height=480
+window/size/width=960
+window/size/height=540
 
 [rendering]
 
