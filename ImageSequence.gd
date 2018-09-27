@@ -42,7 +42,9 @@ func _on_RemoveButton_pressed():
     self.queue_free()
 
 func _on_DeleteSelectedButton_pressed():
-    main_sequence.delete_selected()
+    # Create signal on popup
+    main_node.get_node("ConfirmDeleteDialog").connect("confirmed", main_sequence, "delete_selected")
+    main_node.get_node("ConfirmDeleteDialog").popup()
 
 func _on_ReloadButton_pressed():
     main_sequence.reload()

@@ -127,6 +127,9 @@ class Sequence:
                     if dir.remove(image.filepath) != OK:
                         print('Could not delete ', image.filepath)
         self.reload()
+        # Disconnect signal from confirm dialog popup
+        main_node.get_node("ConfirmDeleteDialog").disconnect("confirmed", self, "delete_selected")
+
 
     func remove():
         self.curve.delete()
