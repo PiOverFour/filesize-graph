@@ -56,8 +56,8 @@ func show_popup(image_id):
     else:
         size = "frame missing"
     var popup_node = get_node("Popup")
-    popup_node.rect_global_position.x = rect_global_position.x
-    popup_node.rect_global_position.y = image_node.rect_global_position.y #+ 20.0
+    popup_node.rect_global_position.x = min(image_node.rect_global_position.x, self.rect_global_position.x+self.rect_size.x-popup_node.rect_size.x-40)
+    popup_node.rect_global_position.y = image_node.rect_global_position.y + 20.0
     popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/Frame").text = str(main_sequence.images[image_node.image_id].frame)
     popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/Size").text = size
     popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
