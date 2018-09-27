@@ -63,6 +63,7 @@ _sections_unfolded = [ "Dialog", "Size Flags" ]
 
 [node name="ConfirmDeleteDialog" type="ConfirmationDialog" parent="." index="1"]
 
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -87,22 +88,21 @@ _sections_unfolded = [ "Dialog" ]
 
 [node name="AboutDialog" type="WindowDialog" parent="." index="2"]
 
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -162.0
+margin_left = -180.0
 margin_top = -70.0
-margin_right = 162.0
+margin_right = 240.0
 margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 5
-size_flags_vertical = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
 popup_exclusive = false
 window_title = ""
 resizable = false
@@ -114,39 +114,45 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -162.0
-margin_top = -40.0
-margin_right = 162.0
-margin_bottom = 40.0
+margin_left = -210.0
+margin_top = -55.0
+margin_right = 210.0
+margin_bottom = 55.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
+focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
+size_flags_vertical = 8
 bbcode_enabled = true
 bbcode_text = "[center][b]Filesize Graph[/b]
 
-An experimental file visualiser by Damien Picard.
+An experimental file visualiser © Damien Picard.
 
-[url=https://github.com/pioverfour/TODO connard]GitHub[/url]"
+This program is available under the GNU GPL v3.0 license.
+You may find its source code at Github:
+[url]https://github.com/PiOverFour/filesize-graph[/url]"
 visible_characters = -1
 percent_visible = 1.0
 meta_underlined = true
 tab_size = 4
 text = "Filesize Graph
 
-An experimental file visualiser by Damien Picard.
+An experimental file visualiser © Damien Picard.
 
-GitHub"
+This program is available under the GNU GPL v3.0 license.
+You may find its source code at Github:
+https://github.com/PiOverFour/filesize-graph"
 scroll_active = false
 scroll_following = false
-selection_enabled = false
+selection_enabled = true
 override_selected_font_color = false
 _sections_unfolded = [ "BBCode", "Size Flags" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." index="3"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
