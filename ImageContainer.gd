@@ -2,9 +2,6 @@ extends GridContainer
 
 onready var main_node = get_node("../../..")
 
-func _ready():
-#    main_node = get_node("/root/ImageSequence")
-    print(main_node)
 
 func draw_highlight():
     if main_node.do_highlight:

@@ -4,8 +4,7 @@ signal point_highlighted(curve_id, point_id)
 signal points_selected(curves)  # [[id, [p, ...]], ...]
 
 var curves = []
-
-var graph_transform
+onready var graph_transform = Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, rect_size.y))
 
 var zoom_speed = 1.1
 var zoom_start
@@ -116,6 +115,10 @@ class GraphCurve:
         var size = Vector2(max_x - min_x, max_y - min_y)
         self.graph.zoom_to(origin, size)
 
+    func clear():
+        self.points.clear()
+        self.graph.update()
+
     func delete():
         self.graph.curves.remove(self.graph.curves.find(self))
         self.graph.update()
@@ -130,7 +133,6 @@ func _ready():
     randomize()
     var label = Label.new()
     default_font = label.get_font("")
-    graph_transform = Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, rect_size.y))
     update_graph()
 
 func update_graph():

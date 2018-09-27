@@ -27,6 +27,11 @@ func add_image(image_id, image_path):
     images.append(image_node)
     get_node(image_container).add_child(image_node)
 
+func clear():
+    for image_node in get_node(image_container).get_children():
+        get_node(image_container).remove_child(image_node)
+    images.clear()
+
 func highlight(image_id):
     do_highlight = image_id != -1
     highlight_id = image_id
@@ -40,7 +45,7 @@ func _on_DeleteSelectedButton_pressed():
     main_sequence.delete_selected()
 
 func _on_ReloadButton_pressed():
-    pass # replace with function body
+    main_sequence.reload()
 
 func _on_ZoomToButton_pressed():
     curve.zoom_to()

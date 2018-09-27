@@ -4,8 +4,8 @@ var popup
 
 func _ready():
     popup = get_popup()
-    popup.add_item("Open Sequence")
-    popup.add_item("Quit")
+    popup.add_item("Open Sequence", 0)
+    popup.add_item("Quit", 1)
     
     popup.connect("id_pressed", self, "_on_item_pressed")
 

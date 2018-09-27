@@ -6,10 +6,7 @@ const sequence_panel_scene = preload("res://ImageSequence.tscn")
 
 var sequences = []
 
-var rexp = RegEx.new()
-
 func _ready():
-    rexp.compile("(\\d+)")
     OS.low_processor_usage_mode = true
     get_tree().connect("files_dropped", self, "drop_files")
 
@@ -32,6 +29,7 @@ class Sequence:
     var sequence_panel
     var main_node
     var graph_node
+    var sequences_container_node
     var curve
 
     var images = []
@@ -40,13 +38,41 @@ class Sequence:
     var min_frame
     var max_frame
 
-    func _init(main_node, graph_node, sequences_container_node):
+    var rexp = RegEx.new()
+
+    func _init(main_node, filepaths):
+        rexp.compile("(\\d+)")
         self.main_node = main_node
-        self.graph_node = graph_node
+        self.graph_node = main_node.get_node(main_node.graph_node)
+        self.sequences_container_node = main_node.get_node(main_node.sequences_container_node)
+
+        self.process_files(filepaths)
+        self.create_graph_curve()
+        self.create_sequence_panel()
+
+    func add_image(frame, size, filepath, is_existing, is_empty):
+        self.images.append(Image.new(frame, size, filepath, is_existing, is_empty))
+
+    func clear_images():
+        self.images.clear()
+        self.clear_sequence_panel()
+        self.clear_graph_curve()
+
+    func reload():
+        var filepath = self.images[0].filepath
+        self.clear_images()
+        self.process_files(filepath)
+        self.fill_graph_curve()
+        self.fill_sequence_panel()
+
+    # Graph curve
 
     func create_graph_curve():
-        var polyline = []
         self.curve = self.graph_node.add_curve()
+        self.fill_graph_curve()
+
+    func fill_graph_curve():
+        var polyline = []
         for image in self.images:
             if image.is_empty:
                 self.curve.add_point(image.frame, image.size, Color(1, 0, 0))
@@ -54,20 +80,30 @@ class Sequence:
                 self.curve.add_point(image.frame, image.size)
         self.curve.zoom_to()
 
-    func add_image(frame, size, filepath, is_existing, is_empty):
-        self.images.append(Image.new(frame, size, filepath, is_existing, is_empty))
+    func clear_graph_curve():
+        self.curve.clear()
+
+
+    # Sequence panel
 
     func create_sequence_panel():
         self.sequence_panel = self.main_node.sequence_panel_scene.instance()
-        main_node.get_node(main_node.sequences_container_node).add_child(sequence_panel)
-        main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
-        sequence_panel.graph_node = graph_node
-        sequence_panel.main_node = main_node
-        sequence_panel.main_sequence = self
-        sequence_panel.curve = self.curve
-        sequence_panel.color = self.curve.draw_color
+        self.main_node.get_node(main_node.sequences_container_node).add_child(sequence_panel)
+        self.main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
+        self.sequence_panel.graph_node = graph_node
+        self.sequence_panel.main_node = main_node
+        self.sequence_panel.main_sequence = self
+        self.sequence_panel.curve = self.curve
+        self.sequence_panel.color = self.curve.draw_color
+        self.fill_sequence_panel()
+
+    func fill_sequence_panel():
         for i in range(len(self.images)):
             self.sequence_panel.add_image(i, str(self.curve.points[i].coordinates))
+
+    func clear_sequence_panel():
+        self.sequence_panel.clear()
+
 
     func get_extrema():
         for image in self.images:
@@ -90,118 +126,118 @@ class Sequence:
                     print('Deleting ', image.filepath)
                     if dir.remove(image.filepath) != OK:
                         print('Could not delete ', image.filepath)
+        self.reload()
 
     func remove():
-        self.graph_node.curves.erase(curve)
         self.curve.delete()
+        self.graph_node.curves.erase(curve)
 
         main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
         main_node.get_node(main_node.sequences_container_node).remove_child(self.sequence_panel)
         main_node.sequences.erase(self)
 
 
-# Filename manipulation
+    # Filename manipulation
 
-func get_name_and_frame(file_name):
-    var search = rexp.search_all(file_name)
-    if not len(search):
-        return
-    var frame_number = search[len(search)-1] # get last number
-    frame_number = frame_number.strings[0]
-    var padding = frame_number.length()
-    var pattern = file_name.replace(frame_number, '%0' + str(padding) + 'd')
-    frame_number = int(frame_number)
-    return [pattern, frame_number]
+    func get_name_and_frame(file_name):
+        var search = rexp.search_all(file_name)
+        if not len(search):
+            return
+        var frame_number = search[len(search)-1] # get last number
+        frame_number = frame_number.strings[0]
+        var padding = frame_number.length()
+        var pattern = file_name.replace(frame_number, '%0' + str(padding) + 'd')
+        frame_number = int(frame_number)
+        return [pattern, frame_number]
 
 
-# FS operation
+    # FS operation
 
-func get_sequence_from_file(file_path):
-    var frames = {}
-    var pattern
-    var min_frame = INF
-    var max_frame = -INF
+    static func get_size(filepath):
+        var file = File.new()
+        file.open(filepath, file.READ)
+        var size = file.get_len()
+        file.close()
+        return size
 
-    var dirname = file_path.get_base_dir()
-#    var file_name = filepath.get_file()
-    var file_name
-    var base_pattern = get_name_and_frame(file_path)[0]
+    func get_sequence_from_file(file_path):
+        var frames = {}
+        var pattern
+        var min_frame = INF
+        var max_frame = -INF
 
-    var frame_number
-    var dir = Directory.new()
+        var dirname = file_path.get_base_dir()
+        var file_name
+        var base_pattern = get_name_and_frame(file_path)[0]
 
-    # List matching files in dir
-    if dir.open(dirname) == OK:
-        dir.list_dir_begin(true)
-        file_name = dir.get_next()
-        while (file_name != ""):
-            file_name = dirname.plus_file(file_name)
-            var name_frame = get_name_and_frame(file_name)
-            if typeof(name_frame) != TYPE_ARRAY:
-                # No pattern found. Ignore.
-                file_name = dir.get_next()
-                continue
-            pattern = name_frame[0]
-            frame_number = name_frame[1]
-            if pattern == base_pattern:
-                frames[frame_number] = get_size(file_name)
-                if frame_number < min_frame:
-                    min_frame = frame_number
-                if frame_number > max_frame:
-                    max_frame = frame_number
+        var frame_number
+        var dir = Directory.new()
+
+        # List matching files in dir
+        if dir.open(dirname) == OK:
+            dir.list_dir_begin(true)
             file_name = dir.get_next()
+            while (file_name != ""):
+                file_name = dirname.plus_file(file_name)
+                var name_frame = get_name_and_frame(file_name)
+                if typeof(name_frame) != TYPE_ARRAY:
+                    # No pattern found. Ignore.
+                    file_name = dir.get_next()
+                    continue
+                pattern = name_frame[0]
+                frame_number = name_frame[1]
+                # Compare pattern to base pattern, eliminate non-matching files
+                if pattern == base_pattern:
+                    frames[frame_number] = get_size(file_name)
+                    if frame_number < min_frame:
+                        min_frame = frame_number
+                    if frame_number > max_frame:
+                        max_frame = frame_number
+                file_name = dir.get_next()
 
-    # Add missing frames
-    for i in range(min_frame, max_frame+1):
-        if not i in frames:
-            frames[i] = -1
+        # Add missing frames
+        for i in range(min_frame, max_frame+1):
+            if not i in frames:
+                frames[i] = -1
 
-    # Convert to array, to allow sorting
-    var frames_array = []
-    for f in frames:
-        frames_array.append([f, frames[f]])
-    return [base_pattern, frames_array]  # [pattern, [[frame_number, size], ...]]
-
-func get_size(filepath):
-    var file = File.new()
-    file.open(filepath, file.READ)
-    var size = file.get_len()
-    file.close()
-    return size
+        # Convert to array, to allow sorting
+        var frames_array = []
+        for f in frames:
+            frames_array.append([f, frames[f]])
+        return [base_pattern, frames_array]  # [pattern, [[frame_number, size], ...]]
 
 
-# App stuff
+    # App stuff
 
-static func image_sort(a, b):
-    return a[0] < b[0]
+    static func image_sort(a, b):
+        return a[0] < b[0]
+
+    func process_files(filepaths):
+        # Get sequence if only one file is passed
+        if typeof(filepaths) == TYPE_STRING_ARRAY:
+            filepaths = get_sequence_from_file(filepaths[0])
+        elif typeof(filepaths) == TYPE_STRING:
+            filepaths = get_sequence_from_file(filepaths)
+        var pattern = filepaths[0]
+        var frames = filepaths[1]
+        frames = Array(frames)  # Make sortable (?)
+        frames.sort_custom(self, 'image_sort')
+
+        # Create sequence
+        var size
+        var filepath
+        for frame in frames:
+            size = frame[1]
+            filepath = pattern % frame[0]
+            self.add_image(frame[0], size, filepath, size != -1, size == 0)
+
 
 func process_files(filepaths):
-    # Get sequence if only one file is passed
-    if typeof(filepaths) == TYPE_STRING_ARRAY:
-        filepaths = get_sequence_from_file(filepaths[0])
-    elif typeof(filepaths) == TYPE_STRING:
-        filepaths = get_sequence_from_file(filepaths)
-    var pattern = filepaths[0]
-    var frames = filepaths[1]
-    frames = Array(frames)  # Make sortable (?)
-    frames.sort_custom(self, 'image_sort')
-
-    # Create sequence
-    var size
-    var filepath
-    var sequence = Sequence.new(self, get_node(graph_node), get_node(sequences_container_node))
-    for frame in frames:
-        size = frame[1]
-        filepath = pattern % frame[0]
-        sequence.add_image(frame[0], size, filepath, size != -1, size == 0)
-
-    sequence.create_graph_curve()
-    sequence.create_sequence_panel()
+    var sequence = Sequence.new(self, filepaths)
     sequences.append(sequence)
 
 func drop_files(files, screen):
     process_files(files)
-
 
 func _on_Graph_points_selected(curves):
     for c in curves:
