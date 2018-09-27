@@ -9,6 +9,23 @@ var sequences = []
 func _ready():
     OS.low_processor_usage_mode = true
     get_tree().connect("files_dropped", self, "drop_files")
+    parse_cmdline_args()
+
+func parse_cmdline_args():
+    var cmdline_args = OS.get_cmdline_args()
+    if "-h" in cmdline_args or "--help" in cmdline_args:
+        print("""Usage: filesize-graph [--file=FILE]
+Visualise file sequences in a graph, in order to see
+missing frames and local variations.
+
+  -h, --help                 display this help and exit
+      --file=FILE            open the sequence of which this file is part
+""")
+        get_tree().quit()
+    for arg in cmdline_args:
+        if arg.begins_with("--file="):
+            process_files(arg.right(len("--file=")))
+
 
 class Image:
     var frame
