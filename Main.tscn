@@ -167,6 +167,7 @@ alignment = 0
 
 [node name="MenuContainer" type="HBoxContainer" parent="VBoxContainer" index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -299,7 +300,7 @@ margin_top = 7.0
 margin_right = 438.0
 margin_bottom = 509.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
+rect_clip_content = true
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3

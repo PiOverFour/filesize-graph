@@ -1,18 +1,16 @@
 extends ColorRect
 
 export(NodePath) var popup
+onready var image_sequence_node = get_node("../../../..")
 
 var image_id
 var curve
 
 func show_popup():
-    var popup_node = get_node(popup)
-    popup_node.rect_global_position = rect_global_position - Vector2(0.0, -30.0)
-    popup_node.get_node("PanelContainer/LabelContainer/Size").text = 'Size: ' + str(1)
-    popup_node.visible = true
+    image_sequence_node.highlight(image_id)
 
 func hide_popup():
-    get_node(popup).hide()
+    image_sequence_node.highlight(-1)
 
 func _notification(what):
     if what == NOTIFICATION_MOUSE_ENTER:

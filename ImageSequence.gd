@@ -13,17 +13,13 @@ var images = []
 const image_scene = preload("res://Image.tscn")
 
 
-func select_image(image_id):
-    var img = $ScrollContainer/GridContainer.get_child(image_id)
-    var xform = img.get_viewport_transform().get_origin()
-    $Popup.popup()
-    $Popup.rect_position = xform
-
 func add_image(image_id, image_path):
     var image_node = image_scene.instance()
     image_node.rect_min_size = Vector2(16, 16)
     image_node.curve = curve
     image_node.image_id = image_id
+    if main_sequence.images[image_id].size == -1:
+        image_node.color = Color(1, 0, 0)
     images.append(image_node)
     get_node(image_container).add_child(image_node)
 
@@ -35,7 +31,41 @@ func clear():
 func highlight(image_id):
     do_highlight = image_id != -1
     highlight_id = image_id
+    if do_highlight:
+        show_popup(image_id)
+    else:
+        hide_popup()
+
     get_node("VBoxContainer/ScrollContainer/ImageContainer").update()
+
+func sizeof_fmt(num, suffix='B'):
+    """From https://stackoverflow.com/a/1094933/4561348"""
+    if abs(num) < 1024.0:
+        return "%3d%s%s" % [num, '', suffix]
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % [num, unit, suffix]
+        num /= 1024.0
+    return "%3.1f%s%s" % [num, 'Yi', suffix]
+
+func show_popup(image_id):
+    var image_node = images[image_id]
+    var size
+    if main_sequence.images[image_id].size != -1:
+        size = sizeof_fmt(main_sequence.images[image_id].size)
+    else:
+        size = "frame missing"
+    var popup_node = get_node("Popup")
+    popup_node.rect_global_position.x = rect_global_position.x
+    popup_node.rect_global_position.y = image_node.rect_global_position.y #+ 20.0
+    popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/Frame").text = str(main_sequence.images[image_node.image_id].frame)
+    popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/Size").text = size
+    popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
+    popup_node.visible = true
+
+func hide_popup():
+    var popup_node = get_node("Popup")
+    popup_node.hide()
 
 func _on_RemoveButton_pressed():
     main_sequence.remove()

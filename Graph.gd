@@ -29,10 +29,10 @@ class Point:
     func _init(frame, size, color):
         self.coordinates = Vector2(frame, size)
         self.display_coordinates = coordinates
-        if coordinates.y:
-            self.color = color
-        else:
+        if coordinates.y == -1:
             self.color = Color(1.0, 0.0, 0.0)
+        else:
+            self.color = color
         self.base_color = self.color
 
     func update_color():
@@ -293,11 +293,6 @@ func draw_curves():
             draw_circle(p.display_coordinates, 3, p.color)
 
 func _draw():
-    # Prevent drawing outside canvas
-    var canvas_rid = get_canvas_item()
-    VisualServer.canvas_item_set_clip(canvas_rid, true)
-    VisualServer.canvas_item_set_custom_rect(canvas_rid, true, Rect2(Vector2(), rect_size))
-
     draw_axes()
     draw_curves()
     if is_selecting:
