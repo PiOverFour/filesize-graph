@@ -14,6 +14,10 @@ config/name="Filesize Graph"
 run/main_scene="res://Main.tscn"
 boot_splash/fullsize=false
 
+[debug]
+
+settings/crash_handler/message=""
+
 [display]
 
 window/size/width=960
@@ -21,4 +25,6 @@ window/size/height=540
 
 [rendering]
 
+vram_compression/import_s3tc=false
+vram_compression/import_etc2=false
 environment/default_environment="res://default_env.tres"
