@@ -181,6 +181,8 @@ class Sequence:
         return size
 
     func get_sequence_from_file(file_path):
+
+        file_path = file_path.replace('\\', '/')
         var frames = {}
         var pattern
         var min_frame = INF
@@ -192,7 +194,6 @@ class Sequence:
 
         var frame_number
         var dir = Directory.new()
-
         # List matching files in dir
         if dir.open(dirname) == OK:
             dir.list_dir_begin(true)
