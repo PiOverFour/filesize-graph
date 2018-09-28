@@ -150,6 +150,12 @@ func zoom_graph(center, factor, base_transform=graph_transform):
     update_graph()
 
 func zoom_to(origin, size):
+    if size.x == 0:  # If only one frame in sequence
+        size.x = 10
+        origin.x -= 5
+    if size.y == 0:  # If all frames have the same size
+        size.y = 2
+        origin.y -= 1
     graph_transform = (Transform2D(Vector2(1, 0), Vector2(0, -1), Vector2(0, 0))  # y-inverted transform, to account for y-down coordinate system, multiplied by...
                        * Transform2D(Vector2(rect_size.x / size.x, 0.0),  # a transform whose x vector fits the graph into window
                                      Vector2(0.0, rect_size.y / size.y),  # same for y
@@ -288,7 +294,8 @@ func draw_curves():
         for p in curve.points:
             polyline.append(p.display_coordinates)
             colors.append(p.color)
-        draw_polyline_colors(polyline, colors, 1.0, true)
+        if len(curve.points) > 1:
+            draw_polyline_colors(polyline, colors, 1.0, true)
         for p in curve.points:
             draw_circle(p.display_coordinates, 3, p.color)
 
