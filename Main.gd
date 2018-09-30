@@ -87,6 +87,7 @@ class Sequence:
     func create_graph_curve():
         self.curve = self.graph_node.add_curve()
         self.fill_graph_curve()
+        self.curve.zoom_to()
 
     func fill_graph_curve():
         var polyline = []
@@ -95,7 +96,7 @@ class Sequence:
                 self.curve.add_point(image.frame, image.size, Color(1, 0, 0))
             else:
                 self.curve.add_point(image.frame, image.size)
-        self.curve.zoom_to()
+        self.graph_node.update_graph()
 
     func clear_graph_curve():
         self.curve.clear()

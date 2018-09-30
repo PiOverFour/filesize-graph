@@ -83,10 +83,6 @@ class GraphCurve:
         for p in self.points:
             if rect.has_point(p.display_coordinates):
                 selected_points.append(self.points.find(p))
-                p.is_selected = true
-            else:
-                p.is_selected = false
-            p.update_color()
         return selected_points
 
     func highlight(closest_point):
@@ -188,7 +184,13 @@ func _gui_input(event):
             # Select
             is_selecting = event.pressed
             if not event.pressed:
-                select()
+                var mode
+                if event.shift:
+                    select("ADD")
+                elif event.control:
+                    select("SUBTRACT")
+                else:
+                    select("REPLACE")
             else:
                 select_rect.position = event.position
                 select_rect.end = event.position
@@ -230,12 +232,29 @@ func _gui_input(event):
                     curve.highlight(null)
             update_graph()
 
-func select():
+func select(mode='REPLACE'):
+    var selected_points
     var selected_curves = {}
-    for i in range(len(curves)):
-        selected_curves[i] = curves[i].find_points_in_rect(select_rect)
+    for c_i in range(len(curves)):
+        selected_curves[c_i] = []
+        selected_points = curves[c_i].find_points_in_rect(select_rect)
+        for p_i in range(len(curves[c_i].points)):
+            if p_i in selected_points:
+                if mode == 'REPLACE' or mode == 'ADD':
+                    curves[c_i].points[p_i].is_selected = true
+                elif mode == 'SUBTRACT':
+                    curves[c_i].points[p_i].is_selected = false
+            else:
+                if mode == 'REPLACE':
+                    curves[c_i].points[p_i].is_selected = false
+
+            if curves[c_i].points[p_i].is_selected:
+                selected_curves[c_i].append(p_i)
+
+            curves[c_i].points[p_i].update_color()
+
     update_graph()
-    emit_signal("points_selected", selected_curves)
+    emit_signal("points_selected", selected_curves)  # selected_curves = {c_i: [p_1, p_2, ...], ...}
 
 func sizeof_fmt(num, suffix='B'):
     """From https://stackoverflow.com/a/1094933/4561348"""
