@@ -2,7 +2,7 @@
 
 An experimental image sequence size visualiser
 
-## Getting Started
+## Introduction
 
 This utility may be used in animation or VFX studios, or any environment where
 you'd need to visualise the size of files (generally compressed images) in a
@@ -33,7 +33,34 @@ Please note that it is not magical, and does not exempt you from checking the
 sequence with your own or someone else's eyes. But it did relieve some stress on
 long rendering nights preceding deadlines.
 
-<!-- TODO examples -->
+## Getting Started
+
+To open an image sequence, use File → Open Sequence and select a file from your
+sequence, or drag and drop a file to the window.  
+A graph will appear in the left pane, a list of images represented as squares in
+the right pane.  
+Sequences are assigned a colour to help identify them.  
+Missing images appear as a red point in the left pane, and as a red square in
+the right pane.
+
+You can navigate the graph by using the middle mouse button to pan. Zoom by
+using the mouse wheel, or CTRL + middle mouse button to zoom either axis.  
+You may also click “Zoom To” in the list pane to frame the sequence in the graph
+view.
+
+![Missing image](doc/missing_image.png)
+
+In this example, you may also notice a drop in the graph, which means that an
+image in the sequence is lighter than those surrounding it. This may be worth
+investigating... By hovering the point, a popup appears, which indicates the
+file size, name and frame number.
+
+![Light image](doc/light_image.png)
+
+If part of the sequence appears corrupted or otherwise needs re-rendering, you
+can select it by clicking and dragging on the graph, and selecting “Delete
+Selected” in the list pane. Note that you can use the SHIFT and CTRL modifier to
+add to or subtract from the selection, respectively.
 
 
 ### Installing
