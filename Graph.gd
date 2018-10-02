@@ -55,7 +55,7 @@ class Point:
         if self.is_active:
             self.color = Color(1.0, 1.0, 1.0)
         elif self.is_selected:
-            self.color = self.base_color.lightened(0.4)
+            self.color = self.base_color.lightened(0.6)
         else:
             self.color = self.base_color
 
@@ -67,8 +67,8 @@ class GraphCurve:
 
     func get_random_color():
         var color = Color()
-        color.v = 1.0
-        color.s = rand_range(0.4, 0.6)
+        color.v = 0.8
+        color.s = 0.5
         color.h = randf()
         return color
 
@@ -82,16 +82,16 @@ class GraphCurve:
     func find_close_point(position):
         var min_distance = INF
         var ls
-        var closest_point_id
+        var closest_point
         var point_local
         for p in self.points:
             point_local = graph.graph_transform * p.coordinates
             ls = (point_local - position).length_squared()
             if ls < min_distance:
                 min_distance = ls
-                closest_point_id = p
+                closest_point = p
         min_distance = sqrt(min_distance)
-        return [closest_point_id, min_distance]
+        return [closest_point, min_distance]
 
     func find_points_in_rect(rect):
         rect = rect.abs()
@@ -200,17 +200,21 @@ func _gui_input(event):
             # Select
             is_selecting = event.pressed
             if not event.pressed:
-                var mode
+                var modifier
                 if event.shift:
-                    select("ADD")
+                    modifier = "ADD"
                 elif event.control:
-                    select("SUBTRACT")
+                    modifier = "SUBTRACT"
                 else:
-                    select("REPLACE")
+                    modifier = "REPLACE"
+                if select_rect.position == event.position:
+                    select_point(event.position, modifier)
+                else:
+                    select_rect(modifier)
             else:
                 select_rect.position = event.position
                 select_rect.end = event.position
-            update()
+            update_graph()
         # Zoom
         elif event.button_index == BUTTON_WHEEL_UP:
             zoom_graph(event.position, Vector2(zoom_speed, zoom_speed))
@@ -248,7 +252,7 @@ func _gui_input(event):
                     curve.highlight(null)
             update_graph()
 
-func select(mode='REPLACE'):
+func select_rect(mode='REPLACE'):
     var selected_points
     var selected_curves = {}
     for c_i in range(len(curves)):
@@ -271,6 +275,20 @@ func select(mode='REPLACE'):
 
     update_graph()
     emit_signal("points_selected", selected_curves)  # selected_curves = {c_i: [p_1, p_2, ...], ...}
+
+func select_point(position, modifier):
+    print('selecting')
+    for c_i in range(len(curves)):
+        var point = curves[c_i].find_close_point(position)[0]
+        point = curves[c_i].points.find(point)
+        for p_i in range(len(curves[c_i].points)):
+            if p_i == point:
+                if modifier in ['ADD', 'REPLACE']:
+                    curves[c_i].points[p_i].is_selected = true
+                elif modifier == 'SUBTRACT':
+                    curves[c_i].points[p_i].is_selected = false
+            elif modifier == 'REPLACE':
+                curves[c_i].points[p_i].is_selected = false
 
 func sizeof_fmt(num, suffix='B'):
     """From https://stackoverflow.com/a/1094933/4561348"""
