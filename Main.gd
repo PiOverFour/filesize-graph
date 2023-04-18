@@ -1,5 +1,5 @@
 # Filesize graph
-# Copyright © 2018 Damien Picard
+# Copyright © 2018-2023 Damien Picard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,15 +16,15 @@
 
 extends Control
 
-export(NodePath) var graph_node
-export(NodePath) var sequences_container_node
+@export var graph_node: NodePath
+@export var sequences_container_node: NodePath
 const sequence_panel_scene = preload("res://ImageSequence.tscn")
 
 var sequences = []
 
 func _ready():
     OS.low_processor_usage_mode = true
-    get_tree().connect("files_dropped", self, "drop_files")
+    get_viewport().files_dropped.connect(process_files)
     parse_cmdline_args()
 
 func parse_cmdline_args():
@@ -43,7 +43,7 @@ missing frames and local variations.
             process_files(arg.right(len("--file=")))
 
 
-class Image:
+class ImageInfo:
     var frame
     var size
     var filepath
@@ -84,7 +84,7 @@ class Sequence:
         self.create_sequence_panel()
 
     func add_image(frame, size, filepath, is_existing, is_empty):
-        self.images.append(Image.new(frame, size, filepath, is_existing, is_empty))
+        self.images.append(ImageInfo.new(frame, size, filepath, is_existing, is_empty))
 
     func clear_images():
         self.images.clear()
@@ -106,7 +106,6 @@ class Sequence:
         self.curve.zoom_to()
 
     func fill_graph_curve():
-        var polyline = []
         for image in self.images:
             if image.is_empty:
                 self.curve.add_point(image.frame, image.size, Color(1, 0, 0))
@@ -121,11 +120,11 @@ class Sequence:
     # Sequence panel
 
     func create_sequence_panel():
-        self.sequence_panel = self.main_node.sequence_panel_scene.instance()
+        self.sequence_panel = self.main_node.sequence_panel_scene.instantiate()
         self.main_node.get_node(main_node.sequences_container_node).add_child(sequence_panel)
         self.main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
-        self.sequence_panel.graph_node = graph_node
-        self.sequence_panel.main_node = main_node
+        self.sequence_panel.graph_node = self.graph_node
+        self.sequence_panel.main_node = self.main_node
         self.sequence_panel.main_sequence = self
         self.sequence_panel.curve = self.curve
         self.sequence_panel.color = self.curve.draw_color
@@ -133,7 +132,7 @@ class Sequence:
 
     func fill_sequence_panel():
         for i in range(len(self.images)):
-            self.sequence_panel.add_image(i, str(self.curve.points[i].coordinates))
+            self.sequence_panel.add_image(i)
 
     func clear_sequence_panel():
         self.sequence_panel.clear()
@@ -153,16 +152,15 @@ class Sequence:
                 self.min_frame = frame
 
     func delete_selected():
-        var dir = Directory.new()
         for image in self.images:
             if image.is_selected:
-                if dir.file_exists(image.filepath):
+                if FileAccess.file_exists(image.filepath):
                     print('Deleting ', image.filepath)
-                    if dir.remove(image.filepath) != OK:
+                    if DirAccess.remove_absolute(image.filepath) != OK:
                         print('Could not delete ', image.filepath)
         self.reload()
         # Disconnect signal from confirm dialog popup
-        main_node.get_node("ConfirmDeleteDialog").disconnect("confirmed", self, "delete_selected")
+        main_node.get_node("ConfirmDeleteDialog").confirmed.disconnect(delete_selected)
 
 
     func remove():
@@ -190,10 +188,9 @@ class Sequence:
 
     # FS operation
 
-    static func get_size(filepath):
-        var file = File.new()
-        file.open(filepath, file.READ)
-        var size = file.get_len()
+    func get_size(filepath):
+        var file = FileAccess.open(filepath, FileAccess.READ)
+        var size = file.get_length()
         file.close()
         return size
 
@@ -210,13 +207,13 @@ class Sequence:
         var base_pattern = get_name_and_frame(file_path)[0]
 
         var frame_number
-        var dir = Directory.new()
+        var dir = DirAccess.open(dirname)
         # List matching files in dir
-        if dir.open(dirname) == OK:
-            dir.list_dir_begin(true)
+        if dir != null:
+            dir.list_dir_begin()
             file_name = dir.get_next()
             while (file_name != ""):
-                file_name = dirname.plus_file(file_name)
+                file_name = dirname.path_join(file_name)
                 var name_frame = get_name_and_frame(file_name)
                 if typeof(name_frame) != TYPE_ARRAY:
                     # No pattern found. Ignore.
@@ -226,7 +223,7 @@ class Sequence:
                 frame_number = name_frame[1]
                 # Compare pattern to base pattern, eliminate non-matching files
                 if pattern == base_pattern:
-                    frames[frame_number] = get_size(file_name)
+                    frames[frame_number] = self.get_size(file_name)
                     if frame_number < min_frame:
                         min_frame = frame_number
                     if frame_number > max_frame:
@@ -252,14 +249,14 @@ class Sequence:
 
     func process_files(filepaths):
         # Get sequence if only one file is passed
-        if typeof(filepaths) == TYPE_STRING_ARRAY:
+        if typeof(filepaths) == TYPE_PACKED_STRING_ARRAY:
             filepaths = get_sequence_from_file(filepaths[0])
         elif typeof(filepaths) == TYPE_STRING:
             filepaths = get_sequence_from_file(filepaths)
         var pattern = filepaths[0]
         var frames = filepaths[1]
         frames = Array(frames)  # Make sortable (?)
-        frames.sort_custom(self, 'image_sort')
+        frames.sort_custom(image_sort)
 
         # Create sequence
         var size
@@ -274,8 +271,8 @@ func process_files(filepaths):
     var sequence = Sequence.new(self, filepaths)
     sequences.append(sequence)
 
-func drop_files(files, screen):
-    process_files(files)
+#func drop_files(files, screen):
+#    process_files(files)
 
 func _on_Graph_points_selected(curves):
     for c in curves:

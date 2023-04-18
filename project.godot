@@ -6,12 +6,13 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=3
+config_version=5
 
 [application]
 
 config/name="Filesize Graph"
 run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.0")
 boot_splash/fullsize=false
 
 [debug]
@@ -20,6 +21,8 @@ settings/crash_handler/message=""
 
 [display]
 
+window/energy_saving/keep_screen_on=false
+window/subwindows/embed_subwindows=false
 window/size/width=960
 window/size/height=540
 

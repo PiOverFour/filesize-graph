@@ -1,5 +1,5 @@
 # Filesize graph
-# Copyright © 2018 Damien Picard
+# Copyright © 2018-2023 Damien Picard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 
 extends ColorRect
 
-export(NodePath) var popup
-onready var image_sequence_node = get_node("../../../..")
+@export var popup: NodePath
+@onready var image_sequence_node = get_node("../../../../..")
 
 var image_id
 var curve

@@ -1,5 +1,5 @@
 # Filesize graph
-# Copyright © 2018 Damien Picard
+# Copyright © 2018-2023 Damien Picard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,14 +20,13 @@ var popup
 
 func _ready():
     popup = get_popup()
-    popup.add_item("Open Sequence", 0)
-    popup.add_item("Quit", 1)
+    popup.add_item("Open Sequence", 0, KEY_MASK_CTRL | KEY_O)
+    popup.add_item("Quit", 1, KEY_MASK_CTRL | KEY_Q)
 
-    popup.connect("id_pressed", self, "_on_item_pressed")
+    popup.id_pressed.connect(_on_item_pressed)
 
 func _on_item_pressed(ID):
     if ID == 0: # Open Sequence
         get_node("/root/Main/FileDialog").popup()
     if ID == 1: # Quit
         get_tree().quit()
-    print(popup.get_item_text(ID), " pressed")

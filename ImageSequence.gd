@@ -1,5 +1,5 @@
 # Filesize graph
-# Copyright © 2018 Damien Picard
+# Copyright © 2018-2023 Damien Picard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,14 +24,14 @@ var do_highlight = false
 var highlight_id = 0
 var color
 
-export(NodePath) var image_container
+@export var image_container: NodePath
 var images = []
 const image_scene = preload("res://Image.tscn")
 
 
-func add_image(image_id, image_path):
-    var image_node = image_scene.instance()
-    image_node.rect_min_size = Vector2(16, 16)
+func add_image(image_id):
+    var image_node = image_scene.instantiate()
+    image_node.custom_minimum_size = Vector2(16, 16)
     image_node.curve = curve
     image_node.image_id = image_id
     if main_sequence.images[image_id].size == -1:
@@ -52,7 +52,7 @@ func highlight(image_id):
     else:
         hide_popup()
 
-    get_node("VBoxContainer/ScrollContainer/ImageContainer").update()
+    get_node("MarginContainer/VBoxContainer/ScrollContainer/ImageContainer").queue_redraw()
 
 func sizeof_fmt(num, suffix='B'):
     """From https://stackoverflow.com/a/1094933/4561348"""
@@ -66,17 +66,19 @@ func sizeof_fmt(num, suffix='B'):
 
 func show_popup(image_id):
     var image_node = images[image_id]
-    var size
+    var image_size
     if main_sequence.images[image_id].size != -1:
-        size = sizeof_fmt(main_sequence.images[image_id].size)
+        image_size = sizeof_fmt(main_sequence.images[image_id].size)
     else:
-        size = "frame missing"
+        image_size = "frame missing"
     var popup_node = get_node("Popup")
-    popup_node.rect_global_position.x = min(image_node.rect_global_position.x, self.rect_global_position.x+self.rect_size.x-popup_node.rect_size.x-40)
-    popup_node.rect_global_position.y = image_node.rect_global_position.y + 20.0
-    popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/Frame").text = str(main_sequence.images[image_node.image_id].frame)
-    popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/Size").text = size
-    popup_node.get_node("LabelBackdrop/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
+    popup_node.position.x = min(image_node.global_position.x,
+        self.global_position.x + self.size.x - popup_node.size.x - 40
+    )
+    popup_node.position.y = image_node.global_position.y + 20.0
+    popup_node.get_node("LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues/Frame").text = str(main_sequence.images[image_node.image_id].frame)
+    popup_node.get_node("LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues/Size").text = image_size
+    popup_node.get_node("LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
     popup_node.visible = true
 
 func hide_popup():
@@ -89,7 +91,7 @@ func _on_RemoveButton_pressed():
 
 func _on_DeleteSelectedButton_pressed():
     # Create signal on popup
-    main_node.get_node("ConfirmDeleteDialog").connect("confirmed", main_sequence, "delete_selected")
+    main_node.get_node("ConfirmDeleteDialog").confirmed.connect(main_sequence.delete_selected)
     main_node.get_node("ConfirmDeleteDialog").popup()
 
 func _on_ReloadButton_pressed():
@@ -98,7 +100,7 @@ func _on_ReloadButton_pressed():
 func _on_ZoomToButton_pressed():
     curve.zoom_to()
 
-func line_from_rect(rect, width=1.0, position=Vector2()):
+func line_from_size(rect, width=1.0, position=Vector2()):
     width = Vector2(width, width)
     var line = [Vector2(position) - width / 2.0,
                 Vector2(position) - width / 2.0 + Vector2(rect) * Vector2(1.0, 0.0),
@@ -109,7 +111,7 @@ func line_from_rect(rect, width=1.0, position=Vector2()):
 
 func draw_border():
     var width = 1.0
-    var line = line_from_rect(rect_size, width)
+    var line = line_from_size(self.size, width)
     draw_polyline(line, self.color, width, true)
 
 func _draw():
