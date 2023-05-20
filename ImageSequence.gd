@@ -24,9 +24,11 @@ var do_highlight = false
 var highlight_id = 0
 var color
 
-@export var image_container: NodePath
 var images = []
 const image_scene = preload("res://Image.tscn")
+
+@export var image_container: NodePath
+@onready var scroll_bar_node = get_node("MarginContainer/VBoxContainer/ScrollContainer/VScrollBar")
 
 
 func add_image(image_id):
@@ -39,10 +41,12 @@ func add_image(image_id):
     images.append(image_node)
     get_node(image_container).add_child(image_node)
 
+
 func clear():
     for image_node in get_node(image_container).get_children():
         get_node(image_container).remove_child(image_node)
     images.clear()
+
 
 func highlight(image_id):
     do_highlight = image_id != -1
@@ -54,6 +58,7 @@ func highlight(image_id):
 
     get_node("MarginContainer/VBoxContainer/ScrollContainer/ImageContainer").queue_redraw()
 
+
 func sizeof_fmt(num, suffix='B'):
     """From https://stackoverflow.com/a/1094933/4561348"""
     if abs(num) < 1024.0:
@@ -63,6 +68,7 @@ func sizeof_fmt(num, suffix='B'):
             return "%3.1f%s%s" % [num, unit, suffix]
         num /= 1024.0
     return "%3.1f%s%s" % [num, 'Yi', suffix]
+
 
 func show_popup(image_id):
     var image_node = images[image_id]
@@ -83,24 +89,38 @@ func show_popup(image_id):
     popup_node.get_node("MarginContainer/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
     popup_node.visible = true
 
+
 func hide_popup():
     var popup_node = main_node.get_node("Tooltip")
     popup_node.hide()
 
+
+func _gui_input(event):
+    if event.is_pressed():
+        if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+            scroll_bar_node.value -= 2.0
+        if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+            scroll_bar_node.value += 2.0
+
+
 func _on_RemoveButton_pressed():
     main_sequence.remove()
     self.queue_free()
+
 
 func _on_DeleteSelectedButton_pressed():
     # Create signal on popup
     main_node.get_node("ConfirmDeleteDialog").confirmed.connect(main_sequence.delete_selected)
     main_node.get_node("ConfirmDeleteDialog").popup()
 
+
 func _on_ReloadButton_pressed():
     main_sequence.reload()
 
+
 func _on_ZoomToButton_pressed():
     curve.zoom_to()
+
 
 func line_from_size(rect, width=1.0, position=Vector2()):
     width = Vector2(width, width)
@@ -111,10 +131,12 @@ func line_from_size(rect, width=1.0, position=Vector2()):
                 Vector2(position) - width / 2.0]
     return line
 
+
 func draw_border():
     var width = 1.0
     var line = line_from_size(self.size, width)
     draw_polyline(line, self.color, width, true)
+
 
 func _draw():
     draw_border()
