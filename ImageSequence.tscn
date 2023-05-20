@@ -11,63 +11,6 @@ size_flags_vertical = 3
 script = ExtResource("1")
 image_container = NodePath("MarginContainer/VBoxContainer/ScrollContainer/ImageContainer")
 
-[node name="Popup" type="Popup" parent="."]
-initial_position = 2
-size = Vector2i(105, 100)
-
-[node name="LabelBackdrop" type="PanelContainer" parent="Popup"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 0.302002
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="Popup/LabelBackdrop"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
-
-[node name="LabelContainer" type="HBoxContainer" parent="Popup/LabelBackdrop/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="LabelContainerKeys" type="VBoxContainer" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Frame" type="Label" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer/LabelContainerKeys"]
-layout_mode = 2
-text = "Frame:"
-
-[node name="FileName" type="Label" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer/LabelContainerKeys"]
-layout_mode = 2
-text = "File name:"
-
-[node name="Size" type="Label" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer/LabelContainerKeys"]
-layout_mode = 2
-text = "Size:"
-
-[node name="LabelContainerValues" type="VBoxContainer" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Frame" type="Label" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues"]
-layout_mode = 2
-
-[node name="FileName" type="Label" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues"]
-layout_mode = 2
-
-[node name="Size" type="Label" parent="Popup/LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues"]
-layout_mode = 2
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 8

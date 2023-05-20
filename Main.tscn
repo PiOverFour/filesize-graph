@@ -125,6 +125,67 @@ horizontal_alignment = 1
 
 [node name="Sprite" type="Sprite2D" parent="."]
 
+[node name="Tooltip" type="PanelContainer" parent="."]
+show_behind_parent = true
+top_level = true
+layout_mode = 0
+offset_left = -80.0
+offset_top = 243.0
+offset_right = 25.0
+offset_bottom = 343.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ColorRect" type="ColorRect" parent="Tooltip"]
+layout_mode = 2
+color = Color(0.162066, 0.162066, 0.162066, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Tooltip"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="LabelContainer" type="HBoxContainer" parent="Tooltip/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LabelContainerKeys" type="VBoxContainer" parent="Tooltip/MarginContainer/LabelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Frame" type="Label" parent="Tooltip/MarginContainer/LabelContainer/LabelContainerKeys"]
+layout_mode = 2
+text = "Frame:"
+horizontal_alignment = 2
+
+[node name="FileName" type="Label" parent="Tooltip/MarginContainer/LabelContainer/LabelContainerKeys"]
+layout_mode = 2
+text = "File name:"
+horizontal_alignment = 2
+
+[node name="Size" type="Label" parent="Tooltip/MarginContainer/LabelContainer/LabelContainerKeys"]
+layout_mode = 2
+text = "Size:"
+horizontal_alignment = 2
+
+[node name="LabelContainerValues" type="VBoxContainer" parent="Tooltip/MarginContainer/LabelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Frame" type="Label" parent="Tooltip/MarginContainer/LabelContainer/LabelContainerValues"]
+layout_mode = 2
+
+[node name="FileName" type="Label" parent="Tooltip/MarginContainer/LabelContainer/LabelContainerValues"]
+layout_mode = 2
+
+[node name="Size" type="Label" parent="Tooltip/MarginContainer/LabelContainer/LabelContainerValues"]
+layout_mode = 2
+
 [connection signal="files_selected" from="FileDialog" to="." method="process_files"]
 [connection signal="point_highlighted" from="VBoxContainer/HSplitContainer/GraphContainer/Graph" to="." method="_on_Graph_point_highlighted"]
 [connection signal="points_selected" from="VBoxContainer/HSplitContainer/GraphContainer/Graph" to="." method="_on_Graph_points_selected"]

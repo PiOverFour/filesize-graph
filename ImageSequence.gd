@@ -71,18 +71,20 @@ func show_popup(image_id):
         image_size = sizeof_fmt(main_sequence.images[image_id].size)
     else:
         image_size = "frame missing"
-    var popup_node = get_node("Popup")
-    popup_node.position.x = min(image_node.global_position.x,
+    var popup_node = main_node.get_node("Tooltip")
+    popup_node.position.x = min(image_node.global_position.x+15,
         self.global_position.x + self.size.x - popup_node.size.x - 40
     )
-    popup_node.position.y = image_node.global_position.y + 20.0
-    popup_node.get_node("LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues/Frame").text = str(main_sequence.images[image_node.image_id].frame)
-    popup_node.get_node("LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues/Size").text = image_size
-    popup_node.get_node("LabelBackdrop/MarginContainer/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
+    popup_node.position.y = min(image_node.global_position.y+15,
+        self.size.y - 80
+    )
+    popup_node.get_node("MarginContainer/LabelContainer/LabelContainerValues/Frame").text = str(main_sequence.images[image_node.image_id].frame)
+    popup_node.get_node("MarginContainer/LabelContainer/LabelContainerValues/Size").text = image_size
+    popup_node.get_node("MarginContainer/LabelContainer/LabelContainerValues/FileName").text = str(main_sequence.images[image_node.image_id].filepath.get_file())
     popup_node.visible = true
 
 func hide_popup():
-    var popup_node = get_node("Popup")
+    var popup_node = main_node.get_node("Tooltip")
     popup_node.hide()
 
 func _on_RemoveButton_pressed():
