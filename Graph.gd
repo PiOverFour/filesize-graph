@@ -35,6 +35,7 @@ var is_selecting = false
 var default_font
 var default_font_size
 
+
 class Point:
     var coordinates
     var display_coordinates
@@ -136,24 +137,27 @@ class GraphCurve:
         self.graph.curves.erase(self.graph.curves.find(self))
         self.graph.queue_redraw()
 
+
 func add_curve():
     var curve = GraphCurve.new(self)
     curves.append(curve)
     update_graph()
     return curve
 
+
 func _ready():
     randomize()
     default_font = ThemeDB.fallback_font
     default_font_size = ThemeDB.fallback_font_size
-
     update_graph()
+
 
 func update_graph():
     for curve in curves:
         for p in curve.points:
             p.display_coordinates = graph_transform * p.coordinates
     queue_redraw()
+
 
 func zoom_graph(center, factor, base_transform=graph_transform):
     var transform = Transform2D()
@@ -162,6 +166,7 @@ func zoom_graph(center, factor, base_transform=graph_transform):
     transform.origin += center
     graph_transform = transform * base_transform
     update_graph()
+
 
 func zoom_to(origin, zoom_size):
     if zoom_size.x == 0:  # If only one frame in sequence
@@ -172,10 +177,11 @@ func zoom_to(origin, zoom_size):
         origin.y -= 1
 
     zoom_size.y *= -1.0  # Y-inverted transform, to account for y-down coordinate system
-    origin.y += size.y   # A full vertical window is subtracted
+    origin.y -= zoom_size.y   # A full vertical window is subtracted
 
-    graph_transform = Transform2D(0, size / zoom_size, 0, origin)
+    graph_transform = Transform2D(0, size / zoom_size, 0, origin * -size / zoom_size)
     update_graph()
+
 
 func _gui_input(event):
     if event is InputEventMouseButton:
@@ -253,6 +259,7 @@ func _gui_input(event):
                     curve.highlight(null)
             update_graph()
 
+
 func select_rect(mode='REPLACE'):
     var selected_points
     var selected_curves = {}
@@ -275,6 +282,7 @@ func select_rect(mode='REPLACE'):
     update_graph()
     emit_signal("points_selected", selected_curves)  # selected_curves = {c_i: [p_1, p_2, ...], ...}
 
+
 func select_point(position, modifier):
     var selected_curves = {}
     for c_i in range(len(curves)):
@@ -294,6 +302,7 @@ func select_point(position, modifier):
     update_graph()
     emit_signal("points_selected", selected_curves)  # selected_curves = {c_i: [p_1, p_2, ...], ...}
 
+
 func sizeof_fmt(num, suffix='B'):
     """From https://stackoverflow.com/a/1094933/4561348"""
     if abs(num) < 1024.0:
@@ -303,6 +312,7 @@ func sizeof_fmt(num, suffix='B'):
             return "%3.1f%s%s" % [num, unit, suffix]
         num /= 1024.0
     return "%3.1f%s%s" % [num, 'Yi', suffix]
+
 
 func draw_axes():
     var draw_color = Color(1.0, 1.0, 1.0, 0.1)
@@ -322,6 +332,7 @@ func draw_axes():
     var lower_y_int = lower_corner.y - fmod(lower_corner.y, step_y) - step_y
     var upper_y_int = upper_corner.y - fmod(upper_corner.y, step_y) + step_y
 
+    # TODO fix precision issues in big numbers
     for x in range(lower_x_int, upper_x_int, step_x):
         draw_line(graph_transform * Vector2(x, lower_corner.y),
                   graph_transform * Vector2(x, upper_corner.y),
@@ -338,6 +349,7 @@ func draw_axes():
                     str(sizeof_fmt(y)),HORIZONTAL_ALIGNMENT_LEFT, -1,
                     default_font_size, draw_color)
 
+
 func draw_selection_rect():
     var polyline = [selection_rect.position,
                 selection_rect.position + Vector2(selection_rect.size.x, 0),
@@ -345,6 +357,7 @@ func draw_selection_rect():
                 selection_rect.position + Vector2(0, selection_rect.size.y),
                 selection_rect.position]
     draw_polyline(polyline, Color(1,1,1), 1.0, true)
+
 
 func draw_curves():
     var polyline
@@ -359,6 +372,7 @@ func draw_curves():
             draw_polyline_colors(polyline, colors, -1.0, false)
         for p in curve.points:
             draw_circle(p.display_coordinates, 3, p.color)
+
 
 func _draw():
     draw_axes()
