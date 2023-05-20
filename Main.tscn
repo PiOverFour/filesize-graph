@@ -123,16 +123,13 @@ layout_mode = 2
 text = "Drag files here…"
 horizontal_alignment = 1
 
-[node name="Sprite" type="Sprite2D" parent="."]
-
 [node name="Tooltip" type="PanelContainer" parent="."]
+visible = false
 show_behind_parent = true
 top_level = true
 layout_mode = 0
-offset_left = -80.0
-offset_top = 243.0
-offset_right = 25.0
-offset_bottom = 343.0
+offset_right = 105.0
+offset_bottom = 100.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
