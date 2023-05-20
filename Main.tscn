@@ -120,7 +120,7 @@ alignment = 1
 
 [node name="DragHereLabel" type="Label" parent="VBoxContainer/HSplitContainer/SequencesContainer"]
 layout_mode = 2
-text = "Drag files here..."
+text = "Drag files here…"
 horizontal_alignment = 1
 
 [node name="Sprite" type="Sprite2D" parent="."]
