@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://csm0d00gqjhpm"]
 
-[ext_resource type="Script" path="res://Main.gd" id="1"]
-[ext_resource type="Script" path="res://FileMenu.gd" id="2"]
-[ext_resource type="Script" path="res://EditMenu.gd" id="3"]
-[ext_resource type="Script" path="res://Graph.gd" id="4"]
+[ext_resource type="Script" uid="uid://5yngf0y5wsp2" path="res://Main.gd" id="1"]
+[ext_resource type="Script" uid="uid://dus6u25wapou0" path="res://FileMenu.gd" id="2"]
+[ext_resource type="Script" uid="uid://dwuixekkakbno" path="res://EditMenu.gd" id="3"]
+[ext_resource type="Script" uid="uid://vrfd1vxtcvyb" path="res://Graph.gd" id="4"]
 
 [sub_resource type="Theme" id="1"]
 
@@ -26,11 +26,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="FileDialog" type="FileDialog" parent="."]
-initial_position = 2
 title = "Open File(s)"
+initial_position = 2
 size = Vector2i(800, 400)
 ok_button_text = "Open"
-dialog_text = "Select sequences to open"
 dialog_autowrap = true
 file_mode = 1
 access = 2

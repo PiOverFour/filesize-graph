@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dyr8ymy6j8tor"]
 
-[ext_resource type="Script" path="res://Image.gd" id="1"]
+[ext_resource type="Script" uid="uid://b667itm8ofhw4" path="res://Image.gd" id="1"]
 
 [node name="Image" type="ColorRect"]
 size_flags_horizontal = 0

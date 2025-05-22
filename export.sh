@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export GODOT_BIN=~/bin/Godot_v4.0.3-stable_linux.x86_64
+export GODOT_BIN=~/bin/Godot_v4.4.1-stable_linux.x86_64
 
 mkdir -p export/filesize-graph.x11/
 mkdir -p export/filesize-graph.win
