@@ -137,7 +137,6 @@ class Sequence:
     func clear_sequence_panel():
         self.sequence_panel.clear()
 
-
     func get_extrema():
         for image in self.images:
             var size = image.size
@@ -162,7 +161,6 @@ class Sequence:
         # Disconnect signal from confirm dialog popup
         main_node.get_node("ConfirmDeleteDialog").confirmed.disconnect(delete_selected)
 
-
     func remove():
         self.curve.delete()
         self.graph_node.curves.erase(curve)
@@ -170,7 +168,6 @@ class Sequence:
         main_node.get_node(main_node.sequences_container_node).get_node("DragHereLabel").visible = not len(graph_node.curves)
         main_node.get_node(main_node.sequences_container_node).remove_child(self.sequence_panel)
         main_node.sequences.erase(self)
-
 
     # Filename manipulation
 
@@ -185,7 +182,6 @@ class Sequence:
         frame_number = int(frame_number)
         return [pattern, frame_number]
 
-
     # FS operation
 
     func get_size(filepath):
@@ -195,7 +191,6 @@ class Sequence:
         return size
 
     func get_sequence_from_file(file_path):
-
         file_path = file_path.replace('\\', '/')
         var frames = {}
         var pattern
