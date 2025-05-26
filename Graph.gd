@@ -276,6 +276,8 @@ func select_rect(mode='REPLACE'):
             else:
                 if mode == 'REPLACE':
                     curves[c_i].points[p_i].is_selected = false
+                if mode == 'ADD' and curves[c_i].points[p_i].is_selected:
+                    selected_curves[c_i].append(p_i)
 
             curves[c_i].points[p_i].update_color()
 
@@ -296,8 +298,11 @@ func select_point(position, modifier):
                     selected_curves[c_i].append(p_i)
                 elif modifier == 'SUBTRACT':
                     curves[c_i].points[p_i].is_selected = false
-            elif modifier == 'REPLACE':
-                curves[c_i].points[p_i].is_selected = false
+            else:
+                if modifier == 'REPLACE':
+                    curves[c_i].points[p_i].is_selected = false
+                elif modifier == 'ADD' and curves[c_i].points[p_i].is_selected:
+                    selected_curves[c_i].append(p_i)
 
     update_graph()
     emit_signal("points_selected", selected_curves)  # selected_curves = {c_i: [p_1, p_2, ...], ...}
