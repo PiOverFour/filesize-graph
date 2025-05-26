@@ -369,7 +369,7 @@ func draw_curves():
             polyline.append(p.display_coordinates)
             colors.append(p.color)
         if len(curve.points) > 1:
-            draw_polyline_colors(polyline, colors, -1.0, false)
+            draw_polyline_colors(polyline, colors, 1.0, true)
         for p in curve.points:
             draw_circle(p.display_coordinates, 3, p.color)
 
