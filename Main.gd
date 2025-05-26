@@ -35,7 +35,7 @@ Visualise file sequences in a graph, in order to see
 missing frames and local variations.
 
   -h, --help                 display this help and exit
-      --file=FILE            open the sequence of which this file is part
+      --file=FILE            open the sequence this file belongs to
 """)
         get_tree().quit()
     for arg in cmdline_args:
