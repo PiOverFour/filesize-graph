@@ -42,6 +42,10 @@ func add_image(image_id):
     get_node(image_container).add_child(image_node)
 
 
+func set_sequence_path(path):
+    $MarginContainer/VBoxContainer/VBoxContainer/SequencePathContainer/SequencePath.text = path
+
+
 func clear():
     for image_node in get_node(image_container).get_children():
         get_node(image_container).remove_child(image_node)

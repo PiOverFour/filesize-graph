@@ -75,6 +75,13 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Remove"
 
+[node name="SequencePathContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="SequencePath" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/SequencePathContainer"]
+layout_mode = 2
+
 [connection signal="sort_children" from="MarginContainer/VBoxContainer/ScrollContainer/ImageContainer" to="MarginContainer/VBoxContainer/ScrollContainer/ImageContainer" method="_on_ImageContainer_sort_children"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/ScrollContainer/VScrollBar" to="MarginContainer/VBoxContainer/ScrollContainer/ImageContainer" method="_on_VScrollBar_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer2/ShowInExplorerButton" to="." method="_on_ShowInExplorerButton_pressed"]

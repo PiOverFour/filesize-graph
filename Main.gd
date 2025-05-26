@@ -130,6 +130,7 @@ class Sequence:
         self.sequence_panel.curve = self.curve
         self.sequence_panel.color = self.curve.draw_color
         self.fill_sequence_panel()
+        self.sequence_panel.set_sequence_path(self.seqpath)
 
     func fill_sequence_panel():
         for i in range(len(self.images)):
