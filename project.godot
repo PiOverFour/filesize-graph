@@ -24,6 +24,7 @@ settings/crash_handler/message=""
 
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
+window/per_pixel_transparency/allowed=true
 window/size/width=960
 window/size/height=540
 
