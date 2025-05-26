@@ -114,6 +114,10 @@ func _on_DeleteSelectedButton_pressed():
     main_node.get_node("ConfirmDeleteDialog").popup()
 
 
+func _on_ShowInExplorerButton_pressed():
+    OS.shell_open("file://" + main_sequence.seqpath.get_base_dir())
+
+
 func _on_ReloadButton_pressed():
     main_sequence.reload()
 

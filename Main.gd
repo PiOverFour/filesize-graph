@@ -64,6 +64,7 @@ class Sequence:
     var graph_node
     var sequences_container_node
     var curve
+    var seqpath
 
     var images = []
     var min_size
@@ -252,6 +253,7 @@ class Sequence:
         var frames = filepaths[1]
         frames = Array(frames)  # Make sortable (?)
         frames.sort_custom(image_sort)
+        self.seqpath = pattern
 
         # Create sequence
         var size
