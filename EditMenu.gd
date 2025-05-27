@@ -4,7 +4,7 @@ var popup
 
 func _ready():
     popup = get_popup()
-    popup.add_item("About")
+    popup.add_item(tr("About"))
 
     popup.id_pressed.connect(_on_item_pressed)
 

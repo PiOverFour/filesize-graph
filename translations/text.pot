@@ -1,0 +1,103 @@
+# LANGUAGE translation for Filesize Graph for the following files:
+# res://Main.tscn
+# res://EditMenu.gd
+# res://FileMenu.gd
+# res://ImageSequence.gd
+# res://Main.gd
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Filesize Graph\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: Main.tscn
+msgid "Open File(s)"
+msgstr ""
+
+#: Main.tscn
+msgid "Open"
+msgstr ""
+
+#: Main.tscn
+msgid "Please confirm..."
+msgstr ""
+
+#: Main.tscn
+msgid "Delete selected images?"
+msgstr ""
+
+#: Main.tscn
+msgid ""
+"Filesize Graph\n"
+"Version {version} (Godot {godot_version})\n"
+"\n"
+"An experimental file visualiser\n"
+"\n"
+"© 2018-2025 Damien Picard\n"
+"This program is available under the GNU GPL v3.0 license.\n"
+"You can find its source code at Github:\n"
+"https://github.com/PiOverFour/filesize-graph"
+msgstr ""
+
+#: Main.tscn
+msgid "File"
+msgstr ""
+
+#: Main.tscn
+msgid "Edit"
+msgstr ""
+
+#: Main.tscn
+msgid "Drag files here…"
+msgstr ""
+
+#: Main.tscn
+msgid "Frame:"
+msgstr ""
+
+#: Main.tscn
+msgid "File name:"
+msgstr ""
+
+#: Main.tscn
+msgid "Size:"
+msgstr ""
+
+#: EditMenu.gd
+msgid "About"
+msgstr ""
+
+#: FileMenu.gd
+msgid "Open sequence"
+msgstr ""
+
+#: FileMenu.gd
+msgid "Quit"
+msgstr ""
+
+#: ImageSequence.gd
+msgid "frame missing"
+msgstr ""
+
+#: Main.gd
+msgid ""
+"Usage: filesize-graph [--file=FILE]\n"
+"Visualise file sequences in a graph, in order to see\n"
+"missing frames and local variations.\n"
+"\n"
+"  -h, --help                 display this help and exit\n"
+"      --file=FILE            open the sequence this file belongs to\n"
+msgstr ""
+
+#: Main.gd
+msgid "Deleting {}"
+msgstr ""
+
+#: Main.gd
+msgid "Could not delete {}"
+msgstr ""

@@ -30,13 +30,13 @@ func _ready():
 func parse_cmdline_args():
     var cmdline_args = OS.get_cmdline_args()
     if "-h" in cmdline_args or "--help" in cmdline_args:
-        print("""Usage: filesize-graph [--file=FILE]
+        print(tr("""Usage: filesize-graph [--file=FILE]
 Visualise file sequences in a graph, in order to see
 missing frames and local variations.
 
   -h, --help                 display this help and exit
       --file=FILE            open the sequence this file belongs to
-""")
+"""))
         get_tree().quit()
     for arg in cmdline_args:
         if arg.begins_with("--file="):
@@ -156,9 +156,9 @@ class Sequence:
         for image in self.images:
             if image.is_selected:
                 if FileAccess.file_exists(image.filepath):
-                    print('Deleting ', image.filepath)
+                    print(tr("Deleting {}").format(image.filepath))
                     if DirAccess.remove_absolute(image.filepath) != OK:
-                        print('Could not delete ', image.filepath)
+                        print(tr("Could not delete {}").format(image.filepath))
         self.reload()
         # Disconnect signal from confirm dialog popup
         main_node.get_node("ConfirmDeleteDialog").confirmed.disconnect(delete_selected)

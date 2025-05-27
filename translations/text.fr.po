@@ -1,0 +1,163 @@
+# LANGUAGE translation for Filesize Graph for the following files:
+# res://Main.tscn
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Filesize Graph\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: Main.tscn
+msgid "Open File(s)"
+msgstr "Ouvrir des fichiers"
+
+#: Main.tscn
+msgid "Open"
+msgstr "Ouvrir"
+
+#: Main.tscn
+msgid "Please confirm..."
+msgstr "Confirmer…"
+
+#: Main.tscn
+msgid "Delete selected images?"
+msgstr "Supprimer les images sélectionnées ?"
+
+#: Main.tscn
+msgid ""
+"Filesize Graph\n"
+"Version {version} (Godot {godot_version})\n"
+"\n"
+"An experimental file visualiser\n"
+"\n"
+"© 2018-2025 Damien Picard\n"
+"This program is available under the GNU GPL v3.0 license.\n"
+"You can find its source code at Github:\n"
+"https://github.com/PiOverFour/filesize-graph"
+msgstr ""
+"Filesize Graph\n"
+"Version {version} (Godot {godot_version})\n"
+"\n"
+"Un visualiseur de fichiers expérimental\n"
+"\n"
+"© 2018-2025 Damien Picard\n"
+"Ce programme est disponible sous licence GNU GPL v3.0.\n"
+"Vous pourrez trouver son code source sur Github :\n"
+"https://github.com/PiOverFour/filesize-graph"
+
+#: Main.tscn
+msgid "File"
+msgstr "Fichier"
+
+#: Main.tscn
+msgid "Edit"
+msgstr "Édition"
+
+#: Main.tscn
+msgid "Drag files here…"
+msgstr "Déposer des fichiers ici…"
+
+#: Main.tscn
+msgid "Frame:"
+msgstr "Frame :"
+
+#: Main.tscn
+msgid "File name:"
+msgstr "Nom du fichier :"
+
+#: Main.tscn
+msgid "Size:"
+msgstr "Taille"
+
+#: EditMenu.gd
+msgid "About"
+msgstr "À propos"
+
+#: FileMenu.gd
+msgid "Open sequence"
+msgstr "Ouvrir une séquence"
+
+#: FileMenu.gd
+msgid "Quit"
+msgstr "Quitter"
+
+#: ImageSequence.gd
+msgid "frame missing"
+msgstr "frame manquante"
+
+#: Main.gd
+msgid ""
+"Usage: filesize-graph [--file=FILE]\n"
+"Visualise file sequences in a graph, in order to see\n"
+"missing frames and local variations.\n"
+"\n"
+"  -h, --help                 display this help and exit\n"
+"      --file=FILE            open the sequence this file belongs to\n"
+msgstr ""
+"Usage: filesize-graph [--file=FICHIER]\n"
+"Visualiser des séquences de fichiers sous forme de graphe,\n"
+"pour voir les frames manquantes et les variations locales.\n"
+"\n"
+"  -h, --help                 afficher cette aide et quitter\n"
+"      --file=FICHIER         ouvrir la séquence à laquelle appartient ce "
+"fichier\n"
+
+#: Main.gd
+msgid "Deleting {}"
+msgstr "Suppression de {}"
+
+#: Main.gd
+msgid "Could not delete {}"
+msgstr "Impossible de supprimer {}"
+
+#: ImageSequence.tscn
+msgid ""
+"Open the directory containing this sequence in the file manager / explorer."
+msgstr ""
+"Ouvrir le dossier contenant cette séquence dans le gestionnaire / explorateur de fichiers."
+
+#: ImageSequence.tscn
+msgid "Show in file manager"
+msgstr "Voir dans le gestionnaire de fichiers"
+
+#: ImageSequence.tscn
+msgid "Delete the selected files."
+msgstr "Supprimer les fichiers sélectionnés."
+
+#: ImageSequence.tscn
+msgid "Delete selected"
+msgstr "Supprimer la sélection"
+
+#: ImageSequence.tscn
+msgid ""
+"Pan and zoom the view so that the graph for this sequence fits the view."
+msgstr ""
+"Déplacer et zoomer la vue pour que le graphe de cette séquence tienne dans la vue."
+
+#: ImageSequence.tscn
+msgid "Zoom to"
+msgstr "Zoomer"
+
+#: ImageSequence.tscn
+msgid "Scan the sequence again to see what changed on disk."
+msgstr "Scanner à nouveau la séquence pour voir ce qui a changé sur le disque."
+
+#: ImageSequence.tscn
+msgid "Refresh"
+msgstr "Rafraîchir"
+
+#: ImageSequence.tscn
+msgid "Remove this sequence from the list."
+msgstr "Enlever cette séquence de la liste."
+
+#: ImageSequence.tscn
+msgid "Remove"
+msgstr "Enlever"
+
+#: ImageSequence.tscn
+msgid "Path of the sequence on disk."
+msgstr "Chemin de la séquence sur le disque."

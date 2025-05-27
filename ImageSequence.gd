@@ -80,7 +80,7 @@ func show_popup(image_id):
     if main_sequence.images[image_id].size != -1:
         image_size = sizeof_fmt(main_sequence.images[image_id].size)
     else:
-        image_size = "frame missing"
+        image_size = tr("frame missing")
     var popup_node = main_node.get_node("Tooltip")
     popup_node.position.x = min(image_node.global_position.x+15,
         self.global_position.x + self.size.x - popup_node.size.x - 40
