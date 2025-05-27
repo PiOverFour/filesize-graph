@@ -37,6 +37,7 @@ access = 2
 
 [node name="ConfirmDeleteDialog" type="ConfirmationDialog" parent="."]
 position = Vector2i(505, 303)
+title = "Please confirm..."
 size = Vector2i(201, 100)
 dialog_text = "Delete selected images?"
 

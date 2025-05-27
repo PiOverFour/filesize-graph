@@ -20,7 +20,7 @@ var popup
 
 func _ready():
     popup = get_popup()
-    popup.add_item("Open Sequence", 0, KEY_MASK_CTRL | KEY_O)
+    popup.add_item("Open sequence", 0, KEY_MASK_CTRL | KEY_O)
     popup.add_item("Quit", 1, KEY_MASK_CTRL | KEY_Q)
 
     popup.id_pressed.connect(_on_item_pressed)

@@ -49,12 +49,14 @@ alignment = 2
 [node name="ShowInExplorerButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer2"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Show in Explorer"
+tooltip_text = "Open the directory containing this sequence in the file manager / explorer."
+text = "Show in file manager"
 
 [node name="DeleteSelectedButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer2"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Delete Selected"
+tooltip_text = "Delete the selected files."
+text = "Delete selected"
 
 [node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -63,20 +65,24 @@ alignment = 2
 [node name="ZoomToButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Zoom To"
+tooltip_text = "Pan and zoom the view so that the graph for this sequence fits the view."
+text = "Zoom to"
 
 [node name="ReloadButton2" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Reload"
+tooltip_text = "Scan the sequence again to see what changed on disk."
+text = "Refresh"
 
 [node name="RemoveButton2" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
+tooltip_text = "Remove this sequence from the list."
 text = "Remove"
 
 [node name="SequencePathContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Path of the sequence on disk."
 alignment = 2
 
 [node name="SequencePath" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/SequencePathContainer"]
