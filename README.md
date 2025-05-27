@@ -102,7 +102,8 @@ More about this can be read
 
 ## Author
 
-Copyright © 2018-2023 Damien Picard dam.pic AT free.fr
+Copyright © 2018-2025 Damien Picard dam.pic AT free.fr
+Copyright © 2018-2025 Les Fées Spéciales voeu AT les-fees-speciales.coop
 
 ## License
 
