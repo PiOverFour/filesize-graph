@@ -68,13 +68,13 @@ size_flags_horizontal = 0
 tooltip_text = "Pan and zoom the view so that the graph for this sequence fits the view."
 text = "Zoom to"
 
-[node name="ReloadButton2" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
+[node name="ReloadButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Scan the sequence again to see what changed on disk."
 text = "Refresh"
 
-[node name="RemoveButton2" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
+[node name="RemoveButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Remove this sequence from the list."
@@ -93,5 +93,5 @@ layout_mode = 2
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer2/ShowInExplorerButton" to="." method="_on_ShowInExplorerButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer2/DeleteSelectedButton" to="." method="_on_DeleteSelectedButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer/ZoomToButton" to="." method="_on_ZoomToButton_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer/ReloadButton2" to="." method="_on_ReloadButton_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer/RemoveButton2" to="." method="_on_RemoveButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer/ReloadButton" to="." method="_on_ReloadButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonContainer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
